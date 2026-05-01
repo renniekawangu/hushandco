@@ -1,4 +1,4 @@
-# eSync Store
+# Hush Co
 
 A full-featured e-commerce platform built with Node.js, Express, MongoDB, and EJS templating engine. Featuring integrated Airtel Money payments for seamless transactions.
 
@@ -186,4 +186,4 @@ Copy `.env.example` to `.env` and configure the following variables:
 
 ## License
 
-ISC License
+ISC License# hushandco
