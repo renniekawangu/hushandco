@@ -1,0 +1,36 @@
+<%- include('./partials/header', {title: 'Order Confirmation'}) %>
+
+    <main>
+        <div class="confirmation-container">
+            <div class="confirmation-message">
+                <h2>Thank you for your order!</h2>
+                <p>Order details have been sent to: <%= email %></p>
+            </div>
+            
+            <div class="order-details">
+                <h3>Order Summary</h3>
+                <% order.items.forEach(item => { %>
+                    <div class="cart-item">
+                        <h4><%= item.name %></h4>
+                        <p>Quantity: <%= item.quantity %></p>
+                        <p>Price: K<%= (item.price * item.quantity).toFixed(2) %></p>
+                    </div>
+                <% }); %>
+                <div class="cart-total">
+                    <h3>Total: K<%= order.totalAmount.toFixed(2) %></h3>
+                </div>
+            </div>
+
+            <div class="shipping-info">
+                <h3>Shipping Address</h3>
+                <p>
+                    <%= order.shippingAddress.street %><br>
+                    <%= order.shippingAddress.city %>, <%= order.shippingAddress.state %> <%= order.shippingAddress.zipCode %><br>
+                    <%= order.shippingAddress.country %>
+                </p>
+            </div>
+
+            <a href="/products" class="continue-shopping">Continue Shopping</a>
+        </div>
+    </main>
+<%- include('./partials/footer') %>

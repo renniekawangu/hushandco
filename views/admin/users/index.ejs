@@ -1,0 +1,198 @@
+<%- include('../../partials/header') %>
+
+<div class="admin-container">
+    <div class="content-wrapper">
+        <div class="section-card">
+            <div class="section-header">
+                <div class="section-header-main">
+                    <h2>Users</h2>
+                    <span class="badge badge-count"><%= users.length %> total</span>
+                </div>
+
+                <div class="filters">
+                    <form action="/admin/users" method="GET" class="search-form">
+                        <div class="search-group">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" class="search-icon">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <input 
+                                type="text" 
+                                name="search" 
+                                placeholder="Search by name or email..." 
+                                value="<%= search %>"
+                                class="search-input"
+                            >
+                            <% if (search) { %>
+                                <a href="/admin/users" class="clear-search" title="Clear search">×</a>
+                            <% } %>
+                        </div>
+
+                        <div class="filter-group">
+                            <select name="role" class="select-filter">
+                                <option value="" <%= role === '' ? 'selected' : '' %>>All Roles</option>
+                                <option value="admin" <%= role === 'admin' ? 'selected' : '' %>>Admins</option>
+                                <option value="user" <%= role === 'user' ? 'selected' : '' %>>Users</option>
+                            </select>
+
+                            <button type="submit" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                Search
+                            </button>
+
+                            <% if (search || role) { %>
+                                <a href="/admin/users" class="btn btn-outline">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                        <path d="M19 12H5M12 19l-7-7 7-7"></path>
+                                    </svg>
+                                    Reset
+                                </a>
+                            <% } %>
+                        </div>
+                    </form>
+                </div>
+            </div>            <% if (messages.success) { %>
+                <div class="alert alert-success">
+                    <%= messages.success %>
+                </div>
+            <% } %>
+
+            <% if (messages.error) { %>
+                <div class="alert alert-error">
+                    <%= messages.error %>
+                </div>
+            <% } %>
+
+            <div class="section-content">
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th data-sort="name" onclick="sortTable(this, 0)">Name</th>
+                                <th data-sort="email" onclick="sortTable(this, 1)">Email</th>
+                                <th data-sort="role" onclick="sortTable(this, 2)">Role</th>
+                                <th data-sort="date" onclick="sortTable(this, 3)">Created</th>
+                                <th aria-label="Actions">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% users.forEach(user => { %>
+                                <tr>
+                                    <td data-label="Name"><%= user.name %></td>
+                                    <td data-label="Email"><%= user.email %></td>
+                                    <td data-label="Role">
+                                        <span class="status-badge <%= user.isAdmin ? 'status-admin' : 'status-user' %>">
+                                            <%= user.isAdmin ? 'Admin' : 'User' %>
+                                        </span>
+                                    </td>
+                                    <td data-label="Created" data-date="<%= user.createdAt %>">
+                                        <%= new Date(user.createdAt).toLocaleDateString(undefined, {
+                                            year: 'numeric',
+                                            month: 'short',
+                                            day: 'numeric'
+                                        }) %>
+                                    </td>
+                                    <td class="action-buttons" data-label="Actions">
+                                        <a href="/admin/users/<%= user._id %>" class="btn btn-outline">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                            </svg>
+                                            View
+                                        </a>
+                                        
+                                        <% if (user.email !== locals.user.email) { %>
+                                            <form action="/admin/users/<%= user._id %>/role" method="POST" class="inline-form">
+                                                <input type="hidden" name="action" value="<%= user.isAdmin ? 'remove-admin' : 'make-admin' %>">
+                                                <button type="submit" class="btn <%= user.isAdmin ? 'btn-warning' : 'btn-secondary' %>">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                                        <% if (user.isAdmin) { %>
+                                                            <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/>
+                                                            <path d="M20.94 11a8.994 8.994 0 0 0-7.94-7.94V1h-2v2.06A8.994 8.994 0 0 0 3.06 11H1v2h2.06A8.994 8.994 0 0 0 11 20.94V23h2v-2.06A8.994 8.994 0 0 0 20.94 13H23v-2h-2.06z"/>
+                                                        <% } else { %>
+                                                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                            <circle cx="9" cy="7" r="4"></circle>
+                                                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                        <% } %>
+                                                    </svg>
+                                                    <%= user.isAdmin ? 'Remove Admin' : 'Make Admin' %>
+                                                </button>
+                                            </form>
+
+                                            <form 
+                                                action="/admin/users/<%= user._id %>/delete" 
+                                                method="POST" 
+                                                class="inline-form"
+                                                onsubmit="return confirm('Are you sure you want to delete this user? This action cannot be undone.')"
+                                            >
+                                                <button type="submit" class="btn btn-danger">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                                        <path d="M3 6h18"></path>
+                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                                    </svg>
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <script>
+                function sortTable(th, columnIndex) {
+                    const table = th.closest('table');
+                    const tbody = table.querySelector('tbody');
+                    const rows = Array.from(tbody.querySelectorAll('tr'));
+                    const currentSort = th.getAttribute('data-sort-direction') || 'none';
+                    
+                    // Reset all headers
+                    table.querySelectorAll('th').forEach(header => {
+                        header.removeAttribute('data-sort-direction');
+                    });
+
+                    // Determine next sort direction
+                    const nextSort = currentSort === 'asc' ? 'desc' : 'asc';
+                    th.setAttribute('data-sort-direction', nextSort);
+
+                    // Sort the rows
+                    rows.sort((a, b) => {
+                        let aValue = a.cells[columnIndex].textContent.trim();
+                        let bValue = b.cells[columnIndex].textContent.trim();
+
+                        // Special handling for dates
+                        if (columnIndex === 3) { // Created date column
+                            aValue = new Date(a.cells[columnIndex].getAttribute('data-date')).getTime();
+                            bValue = new Date(b.cells[columnIndex].getAttribute('data-date')).getTime();
+                            return nextSort === 'asc' ? aValue - bValue : bValue - aValue;
+                        }
+
+                        // Special handling for roles
+                        if (columnIndex === 2) {
+                            const roleOrder = { 'Admin': 1, 'User': 2 };
+                            return nextSort === 'asc' 
+                                ? roleOrder[aValue] - roleOrder[bValue]
+                                : roleOrder[bValue] - roleOrder[aValue];
+                        }
+
+                        // Default string comparison
+                        return nextSort === 'asc' 
+                            ? aValue.localeCompare(bValue)
+                            : bValue.localeCompare(aValue);
+                    });
+
+                    // Re-append rows in new order
+                    rows.forEach(row => tbody.appendChild(row));
+                }
+            </script>
+        </div>
+    </div>
+</div>
+
+<%- include('../../partials/footer') %>

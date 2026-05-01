@@ -1,0 +1,176 @@
+<%- include('./partials/header', {title: 'Products'}) %>
+
+        <div class="products-wrapper">
+            <!-- Filters Sidebar -->
+            <div class="filters-card">
+                <form action="/products" method="GET" class="filters-form">
+                    <div class="form-group">
+                        <label for="search">Search</label>
+                        <input type="text" id="search" name="search" placeholder="Search products..." value="<%= searchQuery || '' %>" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" name="category" class="form-control">
+                            <option value="">All Categories</option>
+                            <% categories.forEach(cat => { %>
+                                <option value="<%= cat %>" <%= currentCategory === cat ? 'selected' : '' %>><%= cat %></option>
+                            <% }); %>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sort">Sort By</label>
+                        <select id="sort" name="sort" class="form-control">
+                            <option value="newest" <%= currentSort === 'newest' ? 'selected' : '' %>>Newest First</option>
+                            <option value="price-asc" <%= currentSort === 'price-asc' ? 'selected' : '' %>>Price: Low to High</option>
+                            <option value="price-desc" <%= currentSort === 'price-desc' ? 'selected' : '' %>>Price: High to Low</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Price Range</label>
+                        <div class="price-range">
+                            <input type="number" name="minPrice" placeholder="Min" value="<%= minPrice %>" class="form-control">
+                            <span>to</span>
+                            <input type="number" name="maxPrice" placeholder="Max" value="<%= maxPrice %>" class="form-control">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Apply Filters</button>
+                    <a href="/products" class="btn btn-outline btn-block">Clear Filters</a>
+                </form>
+            </div>
+
+            <!-- Products Section -->
+            <div class="products-section">
+                <div class="product-grid">
+                    <% products.forEach(product => { %>
+                        <div class="product-card">
+                            <div class="product-link" onclick="viewProductDetails('<%= product._id %>')" style="cursor: pointer;">
+                                <div class="product-image">
+                                    <img src="<%= product.imageUrl %>" alt="<%= product.name %>" loading="lazy">
+                                    <% if (product.featured) { %>
+                                        <span class="product-badge badge-featured">Featured</span>
+                                    <% } %>
+                                    <% if (product.stock === 0) { %>
+                                        <span class="product-badge badge-out-of-stock">Out of Stock</span>
+                                    <% } %>
+                                </div>
+                                <div class="product-details">
+                                    <h3 class="product-title"><%= product.name %></h3>
+                                    <p class="product-description"><%= product.description %></p>
+                                    <div class="product-info">
+                                        <p class="product-price">K<%= product.price.toFixed(2) %></p>
+                                        <p class="product-stock <%= product.stock > 0 ? 'in-stock' : 'out-of-stock' %>">
+                                            <%= product.stock > 0 ? `${product.stock} in stock` : 'Out of stock' %>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <form action="/products/add-to-cart/<%= product._id %>" method="POST" class="add-to-cart-form">
+                                <button type="submit" class="btn btn-primary" <%= product.stock === 0 ? 'disabled' : '' %>>
+                                    Add to Cart
+                                </button>
+                            </form>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+
+    <div id="product-details-modal" class="modal" style="display:none">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeProductModal()">×</button>
+            <div id="product-details-body"></div>
+        </div>
+    </div>
+
+<script>
+async function viewProductDetails(id) {
+    try {
+        const res = await fetch('/products/' + id + '/details');
+        if (!res.ok) {
+            alert('Failed to fetch product details');
+            return;
+        }
+        const product = await res.json();
+        
+        const body = document.getElementById('product-details-body');
+        
+        body.innerHTML = `
+            <div class="product-details-view">
+                <div class="product-details-header">
+                    <h2>${product.name}</h2>
+                    ${product.featured ? '<span class="product-badge badge-featured">Featured</span>' : ''}
+                </div>
+                
+                <div class="product-details-grid">
+                    <div class="product-details-image">
+                        <img src="${product.imageUrl || product.image}" alt="${product.name}" style="max-width: 100%; border-radius: 8px;">
+                    </div>
+                    
+                    <div class="product-details-info">
+                        <div class="detail-section">
+                            <h3>Price</h3>
+                            <p class="product-price-large">K${(product.price || 0).toFixed(2)}</p>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h3>Category</h3>
+                            <p class="category-badge">${product.category}</p>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h3>Availability</h3>
+                            <p class="stock-level ${product.stock > 10 ? 'in-stock' : (product.stock > 0 ? 'low-stock' : 'out-of-stock')}">
+                                ${product.stock > 0 ? `${product.stock} units in stock` : 'Out of Stock'}
+                            </p>
+                        </div>
+                        
+                        ${product.sku ? `
+                        <div class="detail-section">
+                            <h3>SKU</h3>
+                            <p>${product.sku}</p>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+                
+                <div class="product-description-full">
+                    <h3>Description</h3>
+                    <p>${product.description || 'No description available'}</p>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-outline" onclick="closeProductModal()">Close</button>
+                    ${product.stock > 0 ? `
+                    <form action="/products/add-to-cart/${product._id}" method="POST" style="margin: 0;">
+                        <button type="submit" class="btn btn-primary">Add to Cart</button>
+                    </form>
+                    ` : '<button class="btn btn-primary" disabled>Out of Stock</button>'}
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('product-details-modal').style.display = 'block';
+    } catch (err) {
+        console.error('Error:', err);
+        alert('Error fetching product details');
+    }
+}
+
+function closeProductModal() {
+    document.getElementById('product-details-modal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('product-details-modal');
+    if (event.target === modal) {
+        closeProductModal();
+    }
+}
+</script>
+
+<%- include('./partials/footer') %>

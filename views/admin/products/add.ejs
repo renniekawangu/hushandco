@@ -1,0 +1,126 @@
+<%- include('../../partials/header', { title: product._id ? 'Edit Product' : 'Add Product' }) %>
+
+<section class="admin-section">
+    <div class="section-header">
+        <div class="section-header-main">
+            <h2><%= product._id ? 'Edit Product' : 'Add New Product' %></h2>
+        </div>
+    </div>
+
+    <div class="section-content">
+        <form method="POST" action="/admin/products<%= product._id ? '/' + product._id : '' %>" class="form-container">
+            <div class="form-group">
+                <label for="name">Product Name</label>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    class="form-control" 
+                    value="<%= product.name || '' %>" 
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea 
+                    id="description" 
+                    name="description" 
+                    class="form-control" 
+                    rows="4" 
+                    required
+                ><%= product.description || '' %></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input 
+                        type="number" 
+                        id="price" 
+                        name="price" 
+                        class="form-control" 
+                        min="0" 
+                        step="0.01" 
+                        value="<%= product.price || '' %>" 
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="stockLevel">Stock Level</label>
+                    <input 
+                        type="number" 
+                        id="stockLevel" 
+                        name="stockLevel" 
+                        class="form-control" 
+                        min="0" 
+                        value="<%= product.stockLevel || '0' %>" 
+                        required
+                    >
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="sku">SKU</label>
+                    <input 
+                        type="text" 
+                        id="sku" 
+                        name="sku" 
+                        class="form-control" 
+                        value="<%= product.sku || '' %>"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <input 
+                        type="text" 
+                        id="category" 
+                        name="category" 
+                        class="form-control" 
+                        value="<%= product.category || '' %>"
+                        list="categories"
+                    >
+                    <datalist id="categories">
+                        <% if (typeof categories !== 'undefined' && categories.length > 0) { %>
+                            <% categories.forEach(category => { %>
+                                <option value="<%= category %>">
+                            <% }) %>
+                        <% } %>
+                    </datalist>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="image">Image URL</label>
+                <input 
+                    type="url" 
+                    id="image" 
+                    name="image" 
+                    class="form-control" 
+                    value="<%= product.image || '' %>"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status" class="form-control">
+                    <option value="draft" <%= (product.status || 'draft') === 'draft' ? 'selected' : '' %>>Draft</option>
+                    <option value="active" <%= product.status === 'active' ? 'selected' : '' %>>Active</option>
+                    <option value="hidden" <%= product.status === 'hidden' ? 'selected' : '' %>>Hidden</option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <%= product._id ? 'Update Product' : 'Create Product' %>
+                </button>
+                <a href="/admin/products" class="btn btn-outline">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+<%- include('../../partials/footer') %>

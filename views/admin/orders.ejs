@@ -1,0 +1,237 @@
+<%- include('../partials/header', { title: 'Orders' }) %>
+
+<section class="admin-section">
+    <div class="section-header">
+        <div class="section-header-main">
+            <h2>Orders</h2>
+            <% if (orders && orders.length > 0) { %>
+                <span class="badge badge-count"><%= orders.length %> orders</span>
+            <% } %>
+        </div>
+
+        <div class="filters">
+            <form method="get" action="/admin/orders" class="search-form">
+                <div class="search-group">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" class="search-icon">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input 
+                        type="text" 
+                        name="search" 
+                        placeholder="Search by order ID or user email..." 
+                        value="<%= typeof search !== 'undefined' ? search : '' %>"
+                        class="search-input"
+                    >
+                    <% if (typeof search !== 'undefined' && search) { %>
+                        <a href="/admin/orders" class="clear-search" title="Clear search">×</a>
+                    <% } %>
+                </div>
+
+                <div class="filter-group">
+                    <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        Search
+                    </button>
+
+                    <% if (typeof search !== 'undefined' && search) { %>
+                        <a href="/admin/orders" class="btn btn-outline">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+                            </svg>
+                            Reset
+                        </a>
+                    <% } %>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="section-content">
+        <% if (!orders || orders.length === 0) { %>
+            <div class="empty-state">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="48" height="48">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="3" y1="9" x2="21" y2="9"></line>
+                    <path d="M9 21V9"></path>
+                </svg>
+                <p>No orders found</p>
+                <% if (typeof search !== 'undefined' && search) { %>
+                    <a href="/admin/orders" class="btn btn-outline">Clear Search</a>
+                <% } %>
+            </div>
+        <% } else { %>
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>User</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th aria-label="Actions"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% orders.forEach(order => { %>
+                            <tr>
+                                <td data-label="Order ID">
+                                    <div class="order-id"><%= order._id %></div>
+                                </td>
+                                <td data-label="User">
+                                    <% if (order.user && order.user.email) { %>
+                                        <div class="user-email"><%= order.user.email %></div>
+                                    <% } else { %>
+                                        <span class="no-data">—</span>
+                                    <% } %>
+                                </td>
+                                <td data-label="Items">
+                                    <ul class="order-items-list">
+                                        <% (order.items || []).forEach(i => { %>
+                                            <li>
+                                                <span class="item-name"><%= i.product ? i.product.name : 'Product removed' %></span>
+                                                <span class="item-quantity">× <%= i.quantity %></span>
+                                            </li>
+                                        <% }) %>
+                                    </ul>
+                                </td>
+                                <td data-label="Total">
+                                    <div class="order-total">K<%= (order.totalAmount || 0).toFixed(2) %></div>
+                                </td>
+                                <td data-label="Status">
+                                    <form method="post" action="/admin/orders/<%= order._id %>/status" class="status-form">
+                                        <select name="status" class="status-select" onchange="this.form.submit()">
+                                            <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                                            <option value="Processing" <%= order.status === 'Processing' ? 'selected' : '' %>>Processing</option>
+                                            <option value="Shipped" <%= order.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                                            <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                                            <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                                        </select>
+                                    </form>
+                                </td>
+                                <td data-label="Created">
+                                    <div class="order-date" title="<%= new Date(order.createdAt).toLocaleString() %>">
+                                        <%= new Date(order.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) %>
+                                    </div>
+                                </td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-outline" onclick="viewDetails('<%= order._id %>')" title="View Order Details">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                        View
+                                    </button>
+                                    <form method="post" action="/admin/orders/delete/<%= order._id %>" class="inline-form" onsubmit="return confirm('Are you sure you want to delete this order? This action cannot be undone.');">
+                                        <button type="submit" class="btn btn-danger" title="Delete Order">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                                <path d="M3 6h18"></path>
+                                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                            </svg>
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+    </div>
+
+    <div id="order-details-modal" class="modal" style="display:none">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div id="order-details-body"></div>
+        </div>
+    </div>
+</section>
+
+<script>
+async function viewDetails(id) {
+    try {
+        const res = await fetch('/admin/orders/' + id + '/details');
+        if (!res.ok) {
+            alert('Failed to fetch order details');
+            return;
+        }
+        const data = await res.json();
+        // Render a friendly HTML view inside the modal
+        const body = document.getElementById('order-details-body');
+        const userEmail = data.user && data.user.email ? data.user.email : (data.user || '—');
+        let itemsHtml = '';
+        if (Array.isArray(data.items)) {
+            itemsHtml = '<ul class="order-items-list">';
+            data.items.forEach(i => {
+                const name = i.product && i.product.name ? i.product.name : 'Product removed';
+                const qty = i.quantity || 0;
+                const price = (i.price || 0).toFixed ? ('K' + (i.price || 0).toFixed(2)) : ('K' + (i.price || 0));
+                itemsHtml += `<li>${name} — ${qty} × ${price}</li>`;
+            });
+            itemsHtml += '</ul>';
+        }
+
+        const shipping = data.shippingAddress ? (
+            `<div class="shipping">
+                <strong>Shipping:</strong>
+                <div>${data.shippingAddress.street || ''}</div>
+                <div>${data.shippingAddress.city || ''} ${data.shippingAddress.state || ''} ${data.shippingAddress.zipCode || ''}</div>
+                <div>${data.shippingAddress.country || ''}</div>
+            </div>`
+        ) : '';
+
+        body.innerHTML = `
+            <div class="order-details">
+                <div class="order-meta">
+                    <h3>Order ${data._id}</h3>
+                    <p><strong>User:</strong> ${userEmail}</p>
+                    <p><strong>Payment:</strong> ${data.paymentStatus || data.payment_status || '—'}</p>
+                    <p><strong>Status:</strong> ${data.status || '—'}</p>
+                    <p><strong>Total:</strong> K${(data.totalAmount || data.total || 0).toFixed(2)}</p>
+                    <p><strong>Created:</strong> ${new Date(data.createdAt).toLocaleString()}</p>
+                    ${shipping}
+                    <div class="order-details-actions">
+                        <button class="btn" onclick="closeModal()">Close</button>
+                        <button class="btn btn-outline" onclick="window.print()">Print</button>
+                    </div>
+                </div>
+                <div class="order-items">
+                    <h4>Items</h4>
+                    <table class="order-items-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                                <th>Line</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${Array.isArray(data.items) ? data.items.map(i => {
+                                const name = i.product && i.product.name ? i.product.name : 'Product removed';
+                                const qty = i.quantity || 0;
+                                const price = (i.price || 0).toFixed ? ('K' + (i.price || 0).toFixed(2)) : ('K' + (i.price || 0));
+                                const line = 'K ' + ((i.price || 0) * (i.quantity || 0)).toFixed(2);
+                                return `<tr><td>${name}</td><td>${qty}</td><td>${price}</td><td>${line}</td></tr>`;
+                            }).join('') : ''}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+        document.getElementById('order-details-modal').style.display = 'block';
+    } catch (err) {
+        alert('Error fetching details');
+    }
+}
+function closeModal() {
+    document.getElementById('order-details-modal').style.display = 'none';
+}
+</script>
+
+<%- include('../partials/footer') %>

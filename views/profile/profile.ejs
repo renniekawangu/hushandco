@@ -1,0 +1,48 @@
+<%- include('../../views/partials/header') %>
+
+<div class="container">
+    <div class="user-profile-header">
+        <div class="user-avatar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+        </div>
+        <div class="user-info-large">
+            <h1><%= user.name %></h1>
+            <p class="user-email"><%= user.email %></p>
+            <% if (user.phone) { %>
+                <p class="user-phone"><%= user.phone %></p>
+            <% } %>
+            <p class="user-since">Member since <%= new Date(user.createdAt).toLocaleDateString() %></p>
+        </div>
+    </div>
+    
+    <div class="profile-section">
+        <h2>Edit Profile Information</h2>
+        <form action="/profile/update" method="POST">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" value="<%= user.name %>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="<%= user.email %>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" value="<%= user.phone || '' %>" placeholder="Enter phone number">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+        </form>
+    </div>
+
+    <div class="profile-links">
+        <a href="/profile/settings" class="btn btn-secondary">Go to Settings</a>
+    </div>
+</div>
+
+<%- include('../../views/partials/footer') %>

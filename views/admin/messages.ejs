@@ -1,0 +1,62 @@
+<%- include('../partials/header', {title: 'Messages'}) %>
+
+<div class="content-wrapper">
+    <div class="section-header">
+        <div class="header-main">
+            <div>
+                <h2>Messages</h2>
+                <p class="text-muted">Recent contact form submissions</p>
+            </div>
+            <div class="message-tools">
+                <form action="/admin/messages" method="GET" class="search-form">
+                    <input type="search" name="q" placeholder="Search messages..." value="<%= typeof query !== 'undefined' ? query : '' %>" class="form-control">
+                    <button class="btn" type="submit">Search</button>
+                </form>
+                <form action="/admin/messages/mark-all-read" method="POST" style="margin-left:0.5rem;">
+                    <button class="btn btn-outline" type="submit">Mark all read</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <% if (!messagesList || messagesList.length === 0) { %>
+            <p>No messages found.</p>
+        <% } else { %>
+            <div class="message-list">
+                <% messagesList.forEach(msg => { %>
+                    <article class="admin-message-card <%= msg.read ? 'is-read' : 'is-unread' %>" data-id="<%= msg._id %>">
+                        <div class="admin-message-row">
+                            <div class="message-main">
+                                <div class="message-head">
+                                    <strong class="message-subject"><%= msg.subject || '(No subject)' %></strong>
+                                    <div class="message-meta">From: <%= msg.name %> &lt;<%= msg.email %>&gt; &middot; <small><%= new Date(msg.createdAt).toLocaleString() %></small></div>
+                                </div>
+                                <p class="message-preview"><%= msg.message.length > 300 ? msg.message.substring(0,300) + '...' : msg.message %></p>
+                            </div>
+                            <div class="admin-message-actions">
+                                <a href="/admin/messages/<%= msg._id %>" class="btn" aria-label="View message">View</a>
+                                <% if (!msg.read) { %>
+                                    <form action="/admin/messages/mark-read/<%= msg._id %>" method="POST" style="margin:0;">
+                                        <button class="btn" aria-label="Mark message as read">Mark read</button>
+                                    </form>
+                                <% } else { %>
+                                    <span class="badge badge-user">Read</span>
+                                <% } %>
+                                <form action="/admin/messages/delete/<%= msg._id %>" method="POST" style="margin:0;">
+                                    <button class="btn btn-danger" onclick="return confirm('Delete this message?')">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                        <details class="message-details">
+                            <summary class="sr-only">Expand message</summary>
+                            <div class="message-body"><%= msg.message.replace(/\n/g, '<br>') %></div>
+                        </details>
+                    </article>
+                <% }); %>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

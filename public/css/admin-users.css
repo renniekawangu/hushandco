@@ -1,0 +1,232 @@
+/* Admin Users Table Styles */
+.section-header-main {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.badge-count {
+    background-color: var(--color-gray-200);
+    color: var(--color-gray-700);
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+}
+
+/* Search Form */
+.search-form {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: start;
+    margin: 1.5rem 0;
+}
+
+.search-group {
+    position: relative;
+    flex: 1;
+    min-width: 300px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-gray-400);
+    pointer-events: none;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.625rem 2.5rem;
+    border: 1px solid var(--color-gray-200);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.search-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.1);
+}
+
+.clear-search {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-gray-400);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+    border-radius: 50%;
+}
+
+.clear-search:hover {
+    color: var(--color-gray-600);
+    background: var(--color-gray-100);
+}
+
+.filter-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.select-filter {
+    padding: 0.625rem 2rem 0.625rem 1rem;
+    border: 1px solid var(--color-gray-200);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    background-color: white;
+    cursor: pointer;
+    min-width: 140px;
+}
+
+/* Table Styles */
+.table-container {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.admin-table th {
+    background: var(--color-gray-50);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--color-gray-700);
+    border-bottom: 1px solid var(--color-gray-200);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+}
+
+.admin-table th[data-sort-direction]::after {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
+
+.admin-table th[data-sort-direction="asc"]::after {
+    border-bottom: 4px solid currentColor;
+}
+
+.admin-table th[data-sort-direction="desc"]::after {
+    border-top: 4px solid currentColor;
+}
+
+.admin-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-gray-100);
+    vertical-align: middle;
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tr:hover {
+    background-color: var(--color-gray-50);
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.status-admin {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
+}
+
+.status-user {
+    background-color: var(--color-gray-100);
+    color: var(--color-gray-700);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.action-buttons .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    border-radius: 0.375rem;
+}
+
+.action-buttons .btn svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .search-form {
+        flex-direction: column;
+    }
+
+    .search-group,
+    .filter-group {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-table thead {
+        display: none;
+    }
+
+    .admin-table tbody tr {
+        display: block;
+        padding: 1rem;
+        border-bottom: 1px solid var(--color-gray-200);
+    }
+
+    .admin-table td {
+        display: flex;
+        padding: 0.5rem 0;
+        border: none;
+        align-items: center;
+    }
+
+    .admin-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        width: 120px;
+        min-width: 120px;
+        color: var(--color-gray-700);
+    }
+
+    .action-buttons {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        padding-top: 0.5rem;
+    }
+}

@@ -1,0 +1,35 @@
+<%- include('../partials/header', {title: 'Message Details'}) %>
+
+    <div class="content-wrapper">
+        <div class="section-card">
+            <div class="section-header">
+                <h2>Message Details</h2>
+            </div>
+            <div class="section-content">
+                <div class="container" style="max-width:800px;margin:0 auto;">
+                    <p><strong>From:</strong> <%= message.name %> &lt;<%= message.email %>&gt;</p>
+                    <p><strong>Received:</strong> <%= new Date(message.createdAt).toLocaleString() %></p>
+                    <p><strong>Subject:</strong> <%= message.subject || '(No subject)' %></p>
+                    <div class="message-body">
+                        <%= message.message.replace(/\n/g, '<br>') %>
+                    </div>
+
+                    <div class="message-controls">
+                        <% if (!message.read) { %>
+                            <form action="/admin/messages/mark-read/<%= message._id %>" method="POST">
+                                <button class="btn">Mark read</button>
+                            </form>
+                        <% } %>
+
+                        <form action="/admin/messages/delete/<%= message._id %>" method="POST" onsubmit="return confirm('Delete this message?');">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+
+                        <a href="/admin/dashboard" class="btn btn-outline">Back to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<%- include('../partials/footer') %>

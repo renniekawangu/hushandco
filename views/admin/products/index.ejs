@@ -1,0 +1,283 @@
+<%- include('../../partials/header', { title: 'Products' }) %>
+
+<section class="admin-section">
+    <div class="section-header">
+        <div class="section-header-main">
+            <h2>Products</h2>
+            <% if (products && products.length > 0) { %>
+                <span class="badge badge-count"><%= products.length %> products</span>
+            <% } %>
+        </div>
+
+        <div class="filters">
+            <form method="get" action="/admin/products" class="search-form">
+                <div class="search-group">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" class="search-icon">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input 
+                        type="text" 
+                        name="search" 
+                        placeholder="Search products..." 
+                        value="<%= typeof search !== 'undefined' ? search : '' %>"
+                        class="search-input"
+                    >
+                    <% if (typeof search !== 'undefined' && search) { %>
+                        <a href="/admin/products" class="clear-search" title="Clear search">×</a>
+                    <% } %>
+                </div>
+
+                <div class="filter-group">
+                    <select name="category" class="select-filter">
+                        <option value="">All Categories</option>
+                        <% if (typeof categories !== 'undefined' && categories.length > 0) { %>
+                            <% categories.forEach(category => { %>
+                                <option value="<%= category %>" <%= (typeof selectedCategory !== 'undefined' && selectedCategory === category) ? 'selected' : '' %>>
+                                    <%= category %>
+                                </option>
+                            <% }) %>
+                        <% } %>
+                    </select>
+
+                    <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        Search
+                    </button>
+
+                    <% if (typeof search !== 'undefined' && search) { %>
+                        <a href="/admin/products" class="btn btn-outline">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+                            </svg>
+                            Reset
+                        </a>
+                    <% } %>
+
+                    <a href="/admin/products/add" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                        </svg>
+                        Add Product
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="section-content">
+        <% if (!products || products.length === 0) { %>
+            <div class="empty-state">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="48" height="48">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <p>No products found</p>
+                <% if (typeof search !== 'undefined' && search) { %>
+                    <a href="/admin/products" class="btn btn-outline">Clear Search</a>
+                <% } else { %>
+                    <a href="/admin/products/add" class="btn btn-primary">Add First Product</a>
+                <% } %>
+            </div>
+        <% } else { %>
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th aria-label="Actions"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% products.forEach(product => { %>
+                            <tr>
+                                <td data-label="Image">
+                                    <div class="product-image-small">
+                                        <img src="<%= product.imageUrl %>" alt="<%= product.name %>" loading="lazy">
+                                    </div>
+                                </td>
+                                <td data-label="Name">
+                                    <div class="product-name"><%= product.name %></div>
+                                    <% if (product.featured) { %>
+                                        <span class="badge badge-featured-small">Featured</span>
+                                    <% } %>
+                                </td>
+                                <td data-label="Category">
+                                    <span class="category-badge"><%= product.category %></span>
+                                </td>
+                                <td data-label="Price">
+                                    <div class="product-price">K<%= product.price.toFixed(2) %></div>
+                                </td>
+                                <td data-label="Stock">
+                                    <div class="stock-level <%= product.stock > 10 ? 'in-stock' : (product.stock > 0 ? 'low-stock' : 'out-of-stock') %>">
+                                        <%= product.stock %>
+                                    </div>
+                                </td>
+                                <td data-label="Status">
+                                    <span class="status-badge status-<%= product.stock > 0 ? 'active' : 'inactive' %>">
+                                        <%= product.stock > 0 ? 'In Stock' : 'Out of Stock' %>
+                                    </span>
+                                </td>
+                                <td data-label="Created">
+                                    <div class="product-date" title="<%= new Date(product.createdAt).toLocaleString() %>">
+                                        <%= new Date(product.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) %>
+                                    </div>
+                                </td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-sm btn-outline" onclick="viewProductDetails('<%= product._id %>')" title="View Product Details">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                        View
+                                    </button>
+                                    <a href="/admin/products/edit/<%= product._id %>" class="btn btn-sm btn-outline" title="Edit Product">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                        </svg>
+                                        Edit
+                                    </a>
+                                    <form method="post" action="/admin/products/<%= product._id %>/delete" class="inline-form" onsubmit="return confirm('Are you sure you want to delete this product? This action cannot be undone.');">
+                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete Product">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                                <path d="M3 6h18"></path>
+                                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                            </svg>
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+    </div>
+
+    <div id="product-details-modal" class="modal" style="display:none">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeProductModal()">×</button>
+            <div id="product-details-body"></div>
+        </div>
+    </div>
+</section>
+
+<script>
+async function viewProductDetails(id) {
+    try {
+        const res = await fetch('/admin/products/' + id + '/details');
+        if (!res.ok) {
+            alert('Failed to fetch product details');
+            return;
+        }
+        const product = await res.json();
+        
+        const body = document.getElementById('product-details-body');
+        
+        body.innerHTML = `
+            <div class="product-details-view">
+                <div class="product-details-header">
+                    <h3>${product.name}</h3>
+                    ${product.featured ? '<span class="badge badge-featured">Featured</span>' : ''}
+                </div>
+                
+                <div class="product-details-grid">
+                    <div class="product-details-image">
+                        <img src="${product.imageUrl || product.image}" alt="${product.name}" style="max-width: 100%; border-radius: 8px;">
+                    </div>
+                    
+                    <div class="product-details-info">
+                        <div class="detail-row">
+                            <strong>Product ID:</strong>
+                            <span>${product._id}</span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <strong>SKU:</strong>
+                            <span>${product.sku || '—'}</span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <strong>Category:</strong>
+                            <span class="category-badge">${product.category}</span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <strong>Price:</strong>
+                            <span class="product-price">K${(product.price || 0).toFixed(2)}</span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <strong>Stock:</strong>
+                            <span class="stock-level ${product.stock > 10 ? 'in-stock' : (product.stock > 0 ? 'low-stock' : 'out-of-stock')}">
+                                ${product.stock || product.stockLevel || 0} units
+                            </span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <strong>Status:</strong>
+                            <span class="status-badge status-${product.stock > 0 ? 'active' : 'inactive'}">
+                                ${product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                            </span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <strong>Created:</strong>
+                            <span>${new Date(product.createdAt).toLocaleString()}</span>
+                        </div>
+                        
+                        ${product.updatedAt ? `
+                        <div class="detail-row">
+                            <strong>Last Updated:</strong>
+                            <span>${new Date(product.updatedAt).toLocaleString()}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+                
+                <div class="product-description-full">
+                    <h4>Description</h4>
+                    <p>${product.description || 'No description available'}</p>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-outline" onclick="closeProductModal()">Close</button>
+                    <a href="/admin/products/edit/${product._id}" class="btn btn-primary">Edit Product</a>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('product-details-modal').style.display = 'block';
+    } catch (err) {
+        console.error('Error:', err);
+        alert('Error fetching product details');
+    }
+}
+
+function closeProductModal() {
+    document.getElementById('product-details-modal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('product-details-modal');
+    if (event.target === modal) {
+        closeProductModal();
+    }
+}
+</script>
+
+<%- include('../../partials/footer') %>

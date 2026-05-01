@@ -1,0 +1,51 @@
+<%- include('../partials/header', {title: product ? 'Edit Product' : 'Add New Product'}) %>
+
+        <form action="<%= product ? `/admin/products/${product._id}` : '/admin/products/add' %>" method="POST" class="product-form">
+            <div class="form-group">
+                <label for="name">Product Name:</label>
+                <input type="text" id="name" name="name" value="<%= product ? product.name : '' %>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required><%= product ? product.description : '' %></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" step="0.01" value="<%= product ? product.price : '' %>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    <option value="">Select a category</option>
+                    <option value="Electronics" <%= product && product.category === 'Electronics' ? 'selected' : '' %>>Electronics</option>
+                    <option value="Clothing" <%= product && product.category === 'Clothing' ? 'selected' : '' %>>Clothing</option>
+                    <option value="Books" <%= product && product.category === 'Books' ? 'selected' : '' %>>Books</option>
+                    <option value="Home & Kitchen" <%= product && product.category === 'Home & Kitchen' ? 'selected' : '' %>>Home & Kitchen</option>
+                    <option value="Sports" <%= product && product.category === 'Sports' ? 'selected' : '' %>>Sports</option>
+                    <option value="Other" <%= product && product.category === 'Other' ? 'selected' : '' %>>Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="imageUrl">Image URL:</label>
+                <input type="url" id="imageUrl" name="imageUrl" value="<%= product ? product.imageUrl : '' %>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="stock">Stock:</label>
+                <input type="number" id="stock" name="stock" value="<%= product ? product.stock : '0' %>" required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="featured" <%= product && product.featured ? 'checked' : '' %>>
+                    Featured Product
+                </label>
+            </div>
+
+            <button type="submit" class="btn"><%= product ? 'Update Product' : 'Add Product' %></button>
+        </form>
+    <%- include('../partials/footer') %>

@@ -1,0 +1,589 @@
+<%- include('../partials/header', {title: 'Admin Dashboard'}) %>
+
+<div class="admin-container" id="adminContainer">
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle Sidebar">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    </button>
+    <div class="admin-sidebar">
+        <h1>Admin Panel</h1>
+        <div class="admin-nav-tabs">
+            <a href="/admin/dashboard" class="nav-tab active">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Dashboard
+            </a>
+            <a href="/admin/users" class="nav-tab">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                Users
+            </a>
+            <a href="/admin/products" class="nav-tab">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                Products
+            </a>
+            <a href="/admin/orders" class="nav-tab">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                Orders
+            </a>
+            <a href="/admin/messages" class="nav-tab">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                Messages
+            </a>
+        </div>
+    </div>
+
+    <div class="admin-content">
+
+    <script>
+        // Accessibility: mark active sidebar nav item with aria-current
+        (function(){
+            try {
+                var active = document.querySelector('.admin-sidebar .nav-tab.active');
+                if (active) active.setAttribute('aria-current', 'page');
+            } catch(e) { console.error(e); }
+        })();
+    </script>
+
+        <% if (messages.error) { %>
+            <div class="alert alert-error">
+                <%= messages.error %>
+            </div>
+        <% } %>
+        <% if (messages.success) { %>
+            <div class="alert alert-success">
+                <%= messages.success %>
+            </div>
+        <% } %>
+
+        <div class="admin-overview">
+            <div class="stat-card">
+                <h3>Total Orders</h3>
+                <div class="stat-value"><%= orders.length %></div>
+                <div class="stat-change positive">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                        <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
+                    </svg>
+                    12% from last month
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Products</h3>
+                <div class="stat-value"><%= products.length %></div>
+                <div class="stat-change positive">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                        <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
+                    </svg>
+                    8% from last month
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>Unread Messages</h3>
+                <div class="stat-value"><%= messagesList.filter(m => !m.read).length %></div>
+                <div class="stat-change">
+                    New messages require attention
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>Pending Orders</h3>
+                <div class="stat-value"><%= orders.filter(o => o.status === 'Pending').length %></div>
+                <div class="stat-change">
+                    Awaiting processing
+                </div>
+            </div>
+        </div>
+
+        <section class="products-section section-card">
+            <div class="section-header">
+                <div class="header-main">
+                    <h2>Recent Products</h2>
+                    <div class="search-controls">
+                        <form action="/admin/dashboard" method="GET" class="search-form">
+                            <input type="text" name="productSearch" placeholder="Search products..." value="<%= productSearch || '' %>" class="form-control">
+                            <select name="productCategory" class="form-control">
+                                <option value="">All Categories</option>
+                                <option value="Electronics" <%= productCategory === 'Electronics' ? 'selected' : '' %>>Electronics</option>
+                                <option value="Clothing" <%= productCategory === 'Clothing' ? 'selected' : '' %>>Clothing</option>
+                                <option value="Books" <%= productCategory === 'Books' ? 'selected' : '' %>>Books</option>
+                                <option value="Home & Kitchen" <%= productCategory === 'Home & Kitchen' ? 'selected' : '' %>>Home & Kitchen</option>
+                                <option value="Sports" <%= productCategory === 'Sports' ? 'selected' : '' %>>Sports</option>
+                                <option value="Other" <%= productCategory === 'Other' ? 'selected' : '' %>>Other</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="product-grid">
+                <% products.slice(0, 4).forEach(product => { %>
+                    <div class="product-card">
+                        <img src="<%= product.imageUrl %>" alt="<%= product.name %>">
+                        <div class="product-details">
+                            <h3><%= product.name %></h3>
+                            <p>K<%= product.price.toFixed(2) %></p>
+                            <p>Stock: <%= product.stock %></p>
+                            <p>Category: <%= product.category %></p>
+                            <div class="admin-actions">
+                                <a href="/admin/products/edit/<%= product._id %>" class="btn">Edit</a>
+                                <form action="/admin/products/delete/<%= product._id %>" method="POST" class="inline-form">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+            <div class="section-footer">
+                <a href="/admin/products" class="btn btn-outline">View All Products</a>
+            </div>
+        </section>
+
+        <section class="messages-section section-card">
+            <div class="section-header">
+                <div class="header-main">
+                    <h2>Recent Messages</h2>
+                    <a href="/admin/messages" class="btn btn-outline">View All Messages</a>
+                </div>
+            </div>
+            <div class="message-list">
+                <% if (messagesList && messagesList.length === 0) { %>
+                    <p class="section-content">No messages yet.</p>
+                <% } else { %>
+                    <% messagesList.slice(0, 3).forEach(msg => { %>
+                            <div class="section-card admin-message-card">
+                                <div class="admin-message-row">
+                                    <div>
+                                        <strong><%= msg.subject || '(No subject)' %></strong>
+                                        <div class="message-meta">
+                                            From: <%= msg.name %> &lt;<%= msg.email %>&gt; &middot; <small><%= new Date(msg.createdAt).toLocaleString() %></small>
+                                        </div>
+                                        <p class="message-preview"><%= msg.message.length > 200 ? msg.message.substring(0,200) + '...' : msg.message %></p>
+                                    </div>
+                                    <div class="admin-message-actions">
+                                        <a href="/admin/messages/<%= msg._id %>" class="btn">View</a>
+                                        <% if (!msg.read) { %>
+                                            <form action="/admin/messages/mark-read/<%= msg._id %>" method="POST" style="margin:0;">
+                                                <button class="btn" type="submit">Mark read</button>
+                                            </form>
+                                        <% } else { %>
+                                            <span class="badge badge-user">Read</span>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                <% } %>
+            </div>
+
+            <div class="section-header">
+                <div class="header-main">
+                    <h2>Recent Orders</h2>
+                    <div class="search-controls">
+                        <form action="/admin/dashboard" method="GET" class="search-form">
+                            <input type="text" name="orderSearch" placeholder="Search by order ID or customer email..." value="<%= orderSearch || '' %>" class="form-control">
+                            <select name="orderStatus" class="form-control">
+                                <option value="">All Statuses</option>
+                                <option value="Pending" <%= orderStatus === 'Pending' ? 'selected' : '' %>>Pending</option>
+                                <option value="Processing" <%= orderStatus === 'Processing' ? 'selected' : '' %>>Processing</option>
+                                <option value="Shipped" <%= orderStatus === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                                <option value="Delivered" <%= orderStatus === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                                <option value="Cancelled" <%= orderStatus === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="id" onclick="sortTable(this, 0)">Order ID</th>
+                            <th data-sort="customer" onclick="sortTable(this, 1)">Customer</th>
+                            <th data-sort="total" onclick="sortTable(this, 2)">Total</th>
+                            <th data-sort="status" onclick="sortTable(this, 3)">Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% orders.forEach(order => { %>
+                            <tr>
+                                    <td title="<%= order._id %>"><%= String(order._id || '').slice(-8) || 'N/A' %></td>
+                                    <td><%= order.user ? order.user.email : 'N/A' %></td>
+                                    <td>K<%= order.totalAmount ? order.totalAmount.toFixed(2) : '0.00' %></td>
+                                <td>
+                                    <form action="/admin/orders/<%= order._id %>/status" method="POST" class="inline-form">
+                                        <select name="status" onchange="this.form.submit()" class="status-badge status-<%= order.status.toLowerCase() %>">
+                                            <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                                            <option value="Processing" <%= order.status === 'Processing' ? 'selected' : '' %>>Processing</option>
+                                            <option value="Shipped" <%= order.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                                            <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                                            <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                                        </select>
+                                    </form>
+                                </td>
+                                <td class="action-buttons">
+                                    <button class="btn" onclick="showOrderDetails('<%= order._id %>')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                        View
+                                    </button>
+                                    <form action="/admin/orders/delete/<%= order._id %>" method="POST" class="inline-form" onsubmit="return confirmDeleteOrder()">
+                                        <button type="submit" class="btn btn-danger">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="orderDetailsModal" class="modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <h2>Order Details</h2>
+                    <span class="order-id" id="modalOrderId"></span>
+                </div>
+                <button class="close-modal" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="order-details-grid">
+                    <!-- Left Column -->
+                    <div class="order-main">
+                        <div class="order-items-card">
+                            <div class="section-header">
+                                <h3>Order Items</h3>
+                            </div>
+                            <div class="order-items-table">
+                                <table class="admin-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                            <th>Unit Price</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="orderItemsTable"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="order-summary-card">
+                            <div class="section-header">
+                                <h3>Order Summary</h3>
+                            </div>
+                            <div class="summary-grid">
+                                <div class="summary-row">
+                                    <span>Subtotal</span>
+                                    <span id="orderSubtotal"></span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Shipping</span>
+                                    <span id="orderShipping"></span>
+                                </div>
+                                <div class="summary-row total">
+                                    <span>Total</span>
+                                    <span id="totalAmount"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="order-sidebar">
+                        <div class="order-status-card">
+                            <div class="section-header">
+                                <h3>Order Status</h3>
+                            </div>
+                            <div class="status-content">
+                                <div id="orderStatusBadge" class="status-badge"></div>
+                                <form id="updateStatusForm" class="status-form">
+                                    <select name="status" class="form-control" id="statusSelect">
+                                        <option value="Pending">Pending</option>
+                                        <option value="Processing">Processing</option>
+                                        <option value="Shipped">Shipped</option>
+                                        <option value="Delivered">Delivered</option>
+                                        <option value="Cancelled">Cancelled</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary">Update Status</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="customer-info-card">
+                            <div class="section-header">
+                                <h3>Customer Information</h3>
+                            </div>
+                            <div class="info-content">
+                                <div class="info-row">
+                                    <span class="info-label">Email</span>
+                                    <span id="customerEmail" class="info-value"></span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Order Date</span>
+                                    <span id="orderDate" class="info-value"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="shipping-card">
+                            <div class="section-header">
+                                <h3>Shipping Address</h3>
+                            </div>
+                            <div class="address-content" id="shippingAddress"></div>
+                        </div>
+
+                        <div class="order-actions">
+                            <button class="btn btn-outline" onclick="printOrder()">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                </svg>
+                                Print Order
+                            </button>
+                            <button class="btn btn-outline" onclick="exportOrderPDF()">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Export PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('orderDetailsModal');
+        const closeBtn = document.querySelector('.close-modal');
+
+        closeBtn.onclick = () => {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function confirmDeleteOrder() {
+            return confirm('Are you sure you want to delete this order? This action cannot be undone.');
+        }
+
+        function sortTable(th, columnIndex) {
+            const table = th.closest('table');
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            const currentSort = th.getAttribute('data-sort-direction') || 'none';
+            
+            // Reset all headers
+            table.querySelectorAll('th').forEach(header => {
+                header.removeAttribute('data-sort-direction');
+            });
+
+            // Determine next sort direction
+            const nextSort = currentSort === 'asc' ? 'desc' : 'asc';
+            th.setAttribute('data-sort-direction', nextSort);
+
+            // Sort the rows
+            rows.sort((a, b) => {
+                const aValue = a.cells[columnIndex].textContent.trim();
+                const bValue = b.cells[columnIndex].textContent.trim();
+
+                // Handle numeric values (like price)
+                if (columnIndex === 2) { // Total column
+                    return nextSort === 'asc' 
+                        ? parseFloat(aValue.replace('K', '')) - parseFloat(bValue.replace('K', ''))
+                        : parseFloat(bValue.replace('K', '')) - parseFloat(aValue.replace('K', ''));
+                }
+
+                // Handle status values
+                if (columnIndex === 3) {
+                    const statusOrder = ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
+                    const aIndex = statusOrder.indexOf(aValue);
+                    const bIndex = statusOrder.indexOf(bValue);
+                    return nextSort === 'asc' ? aIndex - bIndex : bIndex - aIndex;
+                }
+
+                // Default string comparison
+                return nextSort === 'asc' 
+                    ? aValue.localeCompare(bValue)
+                    : bValue.localeCompare(aValue);
+            });
+
+            // Re-append rows in new order
+            rows.forEach(row => tbody.appendChild(row));
+        }
+        
+        function formatCurrency(amount) {
+                return `K${parseFloat(amount || 0).toFixed(2)}`;
+        }
+
+        function formatDate(dateString) {
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+                return dateString ? new Date(dateString).toLocaleString(undefined, options) : 'N/A';
+        }
+
+        async function showOrderDetails(orderId) {
+            try {
+                const response = await fetch(`/admin/orders/${orderId}/details`);
+                if (!response.ok) throw new Error('Failed to fetch order details');
+                
+                const order = await response.json();
+                
+                // Update order ID and status
+                    document.getElementById('modalOrderId').textContent = `Order #${String(order._id || '').slice(-8) || 'N/A'}`;
+                const statusBadge = document.getElementById('orderStatusBadge');
+                    const status = order.status || 'Unknown';
+                    statusBadge.textContent = status;
+                    statusBadge.className = `status-badge status-${status.toLowerCase()}`;
+                
+                // Update status select
+                const statusSelect = document.getElementById('statusSelect');
+                    statusSelect.value = status;
+
+                // Update customer info
+                    document.getElementById('customerEmail').textContent = order.user ? order.user.email : 'N/A';
+                document.getElementById('orderDate').textContent = formatDate(order.createdAt);
+
+                // Update shipping address
+                const addressDiv = document.getElementById('shippingAddress');
+                    const address = order.shippingAddress || {};
+                addressDiv.innerHTML = `
+                        ${address.street || 'No street address'}<br>
+                        ${address.city || 'No city'}, ${address.state || 'No state'} ${address.zipCode || 'No ZIP'}<br>
+                        ${address.country || 'No country'}
+                `;
+
+                // Update order items
+                const itemsTableBody = document.getElementById('orderItemsTable');
+                    itemsTableBody.innerHTML = (order.items || []).map(item => `
+                    <tr>
+                        <td>
+                            <div class="product-cell">
+                                    <img src="${item.product?.imageUrl || '/images/placeholder.jpg'}" alt="${item.product?.name || 'Product'}" class="product-thumbnail">
+                                <div class="product-info">
+                                        <div class="product-name">${item.product?.name || 'Unknown Product'}</div>
+                                        <div class="product-sku">SKU: ${item.product?.sku || 'N/A'}</div>
+                                </div>
+                            </div>
+                        </td>
+                            <td>${item.quantity || 0}</td>
+                            <td>${formatCurrency(item.price)}</td>
+                            <td>${formatCurrency((item.price || 0) * (item.quantity || 0))}</td>
+                    </tr>
+                `).join('');
+
+                // Calculate and update order summary
+                    const subtotal = (order.items || []).reduce((sum, item) => sum + ((item.price || 0) * (item.quantity || 0)), 0);
+                const shipping = order.shippingCost || 0;
+                const total = subtotal + shipping;
+
+                document.getElementById('orderSubtotal').textContent = formatCurrency(subtotal);
+                document.getElementById('orderShipping').textContent = formatCurrency(shipping);
+                document.getElementById('totalAmount').textContent = formatCurrency(total);
+
+                // Set up status form handler
+                const statusForm = document.getElementById('updateStatusForm');
+                statusForm.onsubmit = async (e) => {
+                    e.preventDefault();
+                    try {
+                        const response = await fetch(`/admin/orders/${orderId}/status`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                status: statusSelect.value
+                            })
+                        });
+                        
+                        if (!response.ok) throw new Error('Failed to update status');
+                        
+                        // Update UI
+                        statusBadge.textContent = statusSelect.value;
+                        statusBadge.className = `status-badge status-${statusSelect.value.toLowerCase()}`;
+                        
+                        // Update table cell
+                        const tableRow = document.querySelector(`tr[data-order-id="${orderId}"]`);
+                        if (tableRow) {
+                            const statusCell = tableRow.querySelector('td:nth-child(4)');
+                            statusCell.querySelector('select').value = statusSelect.value;
+                        }
+                    } catch (error) {
+                        console.error('Error updating order status:', error);
+                        alert('Failed to update order status. Please try again.');
+                    }
+                };
+
+                // Show modal
+                modal.style.display = 'block';
+            } catch (error) {
+                console.error('Error fetching order details:', error);
+                alert('Failed to load order details. Please try again.');
+            }
+        }
+
+        async function printOrder() {
+            const printWindow = window.open('', '_blank');
+            if (printWindow) {
+                printWindow.document.write(`
+                    <html>
+                        <head>
+                            <title>Order Details</title>
+                            <style>
+                                body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.5; }
+                                .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+                                table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+                                th, td { border: 1px solid #ddd; padding: 0.5rem; text-align: left; }
+                                .header { margin-bottom: 2rem; }
+                                .summary { margin-top: 2rem; text-align: right; }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="container">
+                                ${document.querySelector('.modal-content').innerHTML}
+                            </div>
+                        </body>
+                    </html>
+                `);
+                printWindow.document.close();
+                printWindow.print();
+            }
+        }
+
+        async function exportOrderPDF() {
+            // You can implement PDF export functionality here
+            alert('PDF export functionality will be implemented soon.');
+        }
+    </script>
+    <%- include('../partials/footer') %>
