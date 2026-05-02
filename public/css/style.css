@@ -5144,7 +5144,7 @@ body {
   gap: 0.5rem;
   width: min(560px, 100%);
   margin-top: 1.5rem;
-  padding: 0.4rem;
+  padding: 0.5rem;
   background: rgba(17, 17, 17, 0.88);
   border: 1px solid rgba(198, 161, 91, 0.24);
   border-radius: 10px;
