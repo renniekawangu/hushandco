@@ -5318,6 +5318,7 @@ body {
 .catalog-hero {
   width: 100%;
   margin: 0;
+  padding: 1rem 1.25rem;
 }
 
 .home-section-header {
@@ -5953,8 +5954,9 @@ button {
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
   gap: 3rem;
   align-items: start;
-  padding: 4rem 0 2rem;
+  padding: 5rem 0 5rem;
   border-top: 1px solid var(--border-subtle);
+  text-align: center;
 }
 
 .about-intro h2,
@@ -5981,7 +5983,7 @@ button {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  padding: 2rem 0 4rem;
+  padding: 5rem 0 5rem;
 }
 
 .about-principle,
@@ -6018,7 +6020,7 @@ button {
 }
 
 .about-band {
-  padding: 1px 0;
+  padding: 5rem 0;
   background: linear-gradient(90deg, rgba(198, 161, 91, 0.12), rgba(85, 170, 150, 0.1));
 }
 
@@ -6052,7 +6054,8 @@ button {
   grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
   gap: 2rem;
   align-items: start;
-  padding: 4rem 0;
+  padding: 5rem 0;
+  text-align: center;
 }
 
 .about-process-copy p {
@@ -6070,7 +6073,7 @@ button {
 }
 
 .about-team {
-  padding: 0 0 4rem;
+  padding: 5rem 0 5rem;
 }
 
 .about-team-header {
@@ -6079,6 +6082,7 @@ button {
   gap: 2rem;
   align-items: end;
   margin-bottom: 1.25rem;
+  text-align: center;
 }
 
 .about-team-header h2 {
@@ -6152,8 +6156,8 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  margin-bottom: 4rem;
-  padding: 2rem;
+  margin-bottom: 5rem;
+  padding: 5rem;
   border: 1px solid rgba(198, 161, 91, 0.2);
   border-radius: 8px;
   background:
