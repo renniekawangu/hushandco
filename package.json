@@ -2,7 +2,7 @@
   "name": "hush-co",
   "version": "1.0.0",
   "description": "Hush Co E-commerce Store",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
