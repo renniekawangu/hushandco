@@ -22,22 +22,26 @@ A full-featured e-commerce platform built with Node.js, Express, MongoDB, and EJ
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/renniekawangu/e-commerce-store
 cd e-commerce-store
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Make sure MongoDB is running on your system:
+
 ```bash
 mongod --version  # Check MongoDB installation
 ```
 
 4. Start the application:
+
 ```bash
 npm start
 ```
@@ -48,44 +52,45 @@ The application will be available at `http://localhost:3000`
 
 ```
 ├── app.js                 # Application entry point
-├── middleware/           
+├── middleware/
 │   └── setUser.js        # User authentication middleware
-├── models/               
+├── models/
 │   ├── messages.js       # Messages model schema
 │   ├── order.js          # Order model schema
 │   ├── product.js        # Product model schema
 │   └── user.js           # User model schema
-├── public/              
-│   └── css/             
+├── public/
+│   └── css/
 │       ├── style.css            # Global styles
 │       ├── admin-users.css      # styles to enhance admin/users page
 │       └── admin-tables.css     # styles to enhance admin tables
-├── routes/   
-│   ├── admin/             
+├── routes/
+│   ├── admin/
 │   |   ├── products.js   # products routes
-│   |   └── users.js      # users routes           
+│   |   └── users.js      # users routes
 │   ├── admin.js          # Admin dashboard routes
 │   ├── contacts.js       # contact routes
 │   ├── auth.js           # Authentication routes
 │   ├── products.js       # Product and cart routes
 │   └── profile.js        # User profile routes
-└── views/               
+└── views/
     ├── checkout.ejs      # Checkout page
     ├── confirmation.ejs  # Order confirmation
     ├── products.ejs      # Product listing
-    ├── admin/           
+    ├── admin/
     │   ├── dashboard.ejs
     │   └── product-form.ejs
-    ├── auth/            
+    ├── auth/
     │   ├── login.ejs
     │   └── signup.ejs
-    ├── partials/        
+    ├── partials/
     │   ├── footer.ejs
     │   └── header.ejs
-    └── profile/         
+    └── profile/
         ├── profile.ejs
         └── settings.ejs
 ```
+
 ## Utility Scripts
 
 - `make-admin.js` - Script to promote a user to admin status
@@ -96,16 +101,19 @@ The application will be available at `http://localhost:3000`
 To set up the development environment:
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
 
 2. Create an admin user:
+
 ```bash
 node make-admin.js <email>
 ```
 
 3. Add sample products:
+
 ```bash
 node add-sample-products.js
 ```
@@ -115,27 +123,33 @@ node add-sample-products.js
 Copy `.env.example` to `.env` and configure the following variables:
 
 ### Server Configuration
+
 - `PORT` - Server port (default: 3000)
 - `NODE_ENV` - Environment mode (development/production)
 
 ### Database
+
 - `MONGODB_URI` - MongoDB connection string
 
 ### Authentication
+
 - `SESSION_SECRET` - Secret for session management
 - `JWT_SECRET` - Secret for JWT tokens (if implemented)
 
 ### Email (for future use)
+
 - `SMTP_HOST` - SMTP server host
 - `SMTP_PORT` - SMTP server port
 - `SMTP_USER` - SMTP username
 - `SMTP_PASS` - SMTP password
 
 ### File Upload
+
 - `UPLOAD_DIR` - Directory for file uploads
 - `MAX_FILE_SIZE` - Maximum file size for uploads
 
 ### Security
+
 - `BCRYPT_ROUNDS` - Number of bcrypt hashing rounds
 - `CORS_ORIGIN` - Allowed CORS origin
 - `RATE_LIMIT_WINDOW` - Rate limiting window in minutes

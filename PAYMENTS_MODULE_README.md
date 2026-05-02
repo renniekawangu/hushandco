@@ -5,19 +5,24 @@ A complete payment integration module for the e-commerce store using Airtel Mone
 ## Module Contents
 
 ### Services
+
 - **`services/airtelMoney.js`** - Airtel Money API client and payment service
 
 ### Routes
+
 - **`routes/payments.js`** - Payment endpoint handlers
 
 ### Views
+
 - **`views/payment-method.ejs`** - Payment method selection interface
 - **`views/payment.ejs`** - Airtel Money payment interface
 
 ### Models
+
 - **`models/order.js`** (updated) - Enhanced with payment tracking fields
 
 ### Configuration
+
 - **`.env.airtel.example`** - Example environment configuration
 - **`AIRTEL_PAYMENTS_GUIDE.md`** - Complete integration guide
 
@@ -178,19 +183,23 @@ The module includes comprehensive error handling:
 ### Common Issues
 
 **"Failed to authenticate with Airtel Money"**
+
 - Verify API credentials are correct
 - Check `NODE_ENV` setting (sandbox vs production)
 - Ensure API URL is correct
 
 **"Order not found"**
+
 - Verify order was created before payment initiation
 - Check user authentication
 
 **"Invalid webhook signature"**
+
 - Verify API key matches webhook signing key
 - Check webhook payload format
 
 **"Payment initiation failed"**
+
 - Check customer phone number format
 - Verify Airtel Money service is operational
 - Check error response from Airtel Money API
@@ -208,6 +217,7 @@ The module includes comprehensive error handling:
 ## Support
 
 For detailed information, see:
+
 - `AIRTEL_PAYMENTS_GUIDE.md` - Complete documentation
 - `services/airtelMoney.js` - Service implementation
 - `routes/payments.js` - Route handlers

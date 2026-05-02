@@ -1,5 +1,17 @@
 <%- include('./partials/header', {title: 'Products'}) %>
 
+        <section class="catalog-hero">
+            <div>
+                <p class="eyebrow">The full catalog</p>
+                <h1>Find the right product faster.</h1>
+                <p>Filter by category, price, and newest arrivals, then add what you need straight to your cart.</p>
+            </div>
+            <form action="/products" method="GET" class="catalog-search" role="search">
+                <input type="search" name="search" placeholder="Search the catalog" value="<%= searchQuery || '' %>" aria-label="Search the catalog">
+                <button type="submit">Search</button>
+            </form>
+        </section>
+
         <div class="products-wrapper">
             <!-- Filters Sidebar -->
             <div class="filters-card">
@@ -44,38 +56,47 @@
 
             <!-- Products Section -->
             <div class="products-section">
-                <div class="product-grid">
-                    <% products.forEach(product => { %>
-                        <div class="product-card">
-                            <div class="product-link" onclick="viewProductDetails('<%= product._id %>')" style="cursor: pointer;">
-                                <div class="product-image">
-                                    <img src="<%= product.imageUrl %>" alt="<%= product.name %>" loading="lazy">
-                                    <% if (product.featured) { %>
-                                        <span class="product-badge badge-featured">Featured</span>
-                                    <% } %>
-                                    <% if (product.stock === 0) { %>
-                                        <span class="product-badge badge-out-of-stock">Out of Stock</span>
-                                    <% } %>
-                                </div>
-                                <div class="product-details">
-                                    <h3 class="product-title"><%= product.name %></h3>
-                                    <p class="product-description"><%= product.description %></p>
-                                    <div class="product-info">
-                                        <p class="product-price">K<%= product.price.toFixed(2) %></p>
-                                        <p class="product-stock <%= product.stock > 0 ? 'in-stock' : 'out-of-stock' %>">
-                                            <%= product.stock > 0 ? `${product.stock} in stock` : 'Out of stock' %>
-                                        </p>
+                <% if (products.length) { %>
+                    <div class="product-grid">
+                        <% products.forEach(product => { %>
+                            <div class="product-card">
+                                <div class="product-link" onclick="viewProductDetails('<%= product._id %>')" style="cursor: pointer;">
+                                    <div class="product-image">
+                                        <img src="<%= product.imageUrl %>" alt="<%= product.name %>" loading="lazy">
+                                        <% if (product.featured) { %>
+                                            <span class="product-badge badge-featured">Featured</span>
+                                        <% } %>
+                                        <% if (product.stock === 0) { %>
+                                            <span class="product-badge badge-out-of-stock">Out of Stock</span>
+                                        <% } %>
+                                    </div>
+                                    <div class="product-details">
+                                        <p class="home-product-category"><%= product.category %></p>
+                                        <h3 class="product-title"><%= product.name %></h3>
+                                        <p class="product-description"><%= product.description %></p>
+                                        <div class="product-info">
+                                            <p class="product-price">K<%= product.price.toFixed(2) %></p>
+                                            <p class="product-stock <%= product.stock > 0 ? 'in-stock' : 'out-of-stock' %>">
+                                                <%= product.stock > 0 ? `${product.stock} in stock` : 'Out of stock' %>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
+                                <form action="/products/add-to-cart/<%= product._id %>" method="POST" class="add-to-cart-form">
+                                    <button type="submit" class="btn btn-primary" <%= product.stock === 0 ? 'disabled' : '' %>>
+                                        Add to Cart
+                                    </button>
+                                </form>
                             </div>
-                            <form action="/products/add-to-cart/<%= product._id %>" method="POST" class="add-to-cart-form">
-                                <button type="submit" class="btn btn-primary" <%= product.stock === 0 ? 'disabled' : '' %>>
-                                    Add to Cart
-                                </button>
-                            </form>
-                        </div>
-                    <% }); %>
-                </div>
+                        <% }); %>
+                    </div>
+                <% } else { %>
+                    <div class="empty-state">
+                        <h3>No products matched your filters</h3>
+                        <p>Try a different search, loosen the price range, or browse the full catalog.</p>
+                        <a href="/products" class="btn btn-primary">Clear Filters</a>
+                    </div>
+                <% } %>
             </div>
         </div>
 

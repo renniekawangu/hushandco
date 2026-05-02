@@ -1,7 +1,7 @@
 {
-  "name": "e-commerce-store",
+  "name": "hush&co",
   "version": "1.0.0",
-  "description": "",
+  "description": "Hush Co E-commerce Store",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,7 +11,11 @@
   "engines": {
     "node": ">=18"
   },
-  "keywords": [],
+  "keywords": [
+    "ecommerce",
+    "store",
+    "hush-co"
+  ],
   "author": "Rennie Kawangu",
   "license": "ISC",
   "dependencies": {
@@ -23,10 +27,12 @@
     "express": "^5.1.0",
     "express-session": "^1.18.2",
     "mongoose": "^8.0.0",
-    "nodemailer": "^6.9.7",
-    "nodemailer": "^7.0.10"
+    "nodemailer": "^8.0.7"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.3.0",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.8.3"
   }
 }

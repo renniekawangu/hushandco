@@ -13,6 +13,7 @@
 ## 📁 Core Implementation Files
 
 ### Services
+
 - **[services/airtelMoney.js](services/airtelMoney.js)** - Main Airtel Money API client
   - OAuth2 authentication
   - Payment initiation
@@ -21,6 +22,7 @@
   - Phone formatting
 
 ### Routes
+
 - **[routes/payments.js](routes/payments.js)** - Payment endpoint handlers
   - `/payments/initiate` - Start payment
   - `/payments/callback` - Webhook receiver
@@ -34,6 +36,7 @@
   - `/products/place-order` - Create order
 
 ### Views
+
 - **[views/payment-method.ejs](views/payment-method.ejs)** - Payment method selection UI
   - Airtel Money selection
   - Future payment methods
@@ -46,11 +49,13 @@
   - Instructions
 
 ### Models
+
 - **[models/order.js](models/order.js)** - Updated Order schema
   - `paymentMethod` field
   - `paymentDetails` object with transaction tracking
 
 ### Configuration
+
 - **[.env.airtel.example](.env.airtel.example)** - Environment configuration template
   - Copy to `.env` and configure
 
@@ -59,14 +64,15 @@
 ## 📖 Documentation Files
 
 ### Quick Reference
-| Document | Purpose | Read Time |
-|----------|---------|-----------|
-| [AIRTEL_PAYMENTS_README.md](AIRTEL_PAYMENTS_README.md) | Module overview & quick start | 5 min |
-| [QUICK_START_CHECKLIST.md](QUICK_START_CHECKLIST.md) | Step-by-step deployment checklist | 15 min |
-| [PAYMENTS_MODULE_README.md](PAYMENTS_MODULE_README.md) | Module reference & troubleshooting | 10 min |
-| [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) | Technical implementation details | 20 min |
-| [ARCHITECTURE_DIAGRAMS.md](ARCHITECTURE_DIAGRAMS.md) | System architecture & flow diagrams | 15 min |
-| [AIRTEL_PAYMENTS_GUIDE.md](AIRTEL_PAYMENTS_GUIDE.md) | Complete setup & API reference | 30 min |
+
+| Document                                               | Purpose                             | Read Time |
+| ------------------------------------------------------ | ----------------------------------- | --------- |
+| [AIRTEL_PAYMENTS_README.md](AIRTEL_PAYMENTS_README.md) | Module overview & quick start       | 5 min     |
+| [QUICK_START_CHECKLIST.md](QUICK_START_CHECKLIST.md)   | Step-by-step deployment checklist   | 15 min    |
+| [PAYMENTS_MODULE_README.md](PAYMENTS_MODULE_README.md) | Module reference & troubleshooting  | 10 min    |
+| [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) | Technical implementation details    | 20 min    |
+| [ARCHITECTURE_DIAGRAMS.md](ARCHITECTURE_DIAGRAMS.md)   | System architecture & flow diagrams | 15 min    |
+| [AIRTEL_PAYMENTS_GUIDE.md](AIRTEL_PAYMENTS_GUIDE.md)   | Complete setup & API reference      | 30 min    |
 
 ---
 
@@ -105,11 +111,11 @@
 
 ## 📊 Updated Files
 
-| File | Changes | Status |
-|------|---------|--------|
-| [app.js](app.js) | Added payments route | ✅ Updated |
-| [package.json](package.json) | Added axios dependency | ✅ Updated |
-| [models/order.js](models/order.js) | Added payment fields | ✅ Updated |
+| File                                     | Changes                 | Status     |
+| ---------------------------------------- | ----------------------- | ---------- |
+| [app.js](app.js)                         | Added payments route    | ✅ Updated |
+| [package.json](package.json)             | Added axios dependency  | ✅ Updated |
+| [models/order.js](models/order.js)       | Added payment fields    | ✅ Updated |
 | [routes/products.js](routes/products.js) | Integrated payment flow | ✅ Updated |
 
 ---
@@ -141,6 +147,7 @@ open http://localhost:3000/products
 ## 🔐 Environment Configuration
 
 Required variables in `.env`:
+
 ```env
 AIRTEL_CLIENT_ID=your_value
 AIRTEL_CLIENT_SECRET=your_value
@@ -158,6 +165,7 @@ See [.env.airtel.example](.env.airtel.example) for template.
 ## 📚 File Descriptions
 
 ### Core Service (`services/airtelMoney.js`)
+
 - **Size**: 270+ lines
 - **Purpose**: Airtel Money API client
 - **Key Methods**: 7 public methods
@@ -165,6 +173,7 @@ See [.env.airtel.example](.env.airtel.example) for template.
 - **Status**: Production-ready
 
 ### Payment Routes (`routes/payments.js`)
+
 - **Size**: 180+ lines
 - **Purpose**: Payment endpoint handlers
 - **Endpoints**: 5 routes
@@ -172,16 +181,19 @@ See [.env.airtel.example](.env.airtel.example) for template.
 - **Status**: Production-ready
 
 ### Payment Views
+
 - **payment-method.ejs**: 160+ lines, payment selection UI
 - **payment.ejs**: 240+ lines, payment processing UI
 - **Status**: Mobile-responsive, production-ready
 
 ### Testing Utility (`test-payments.js`)
+
 - **Size**: 200+ lines
 - **Tests**: 18 comprehensive checks
 - **Status**: Automated test suite
 
 ### Documentation
+
 - **Total Pages**: 6 comprehensive documents
 - **Total Words**: 15,000+ words
 - **Coverage**: Setup, API, architecture, troubleshooting
@@ -191,6 +203,7 @@ See [.env.airtel.example](.env.airtel.example) for template.
 ## 🎯 API Endpoints Reference
 
 ### Payment Endpoints
+
 ```
 POST   /payments/initiate              Start payment process
 POST   /payments/callback              Webhook receiver
@@ -200,6 +213,7 @@ POST   /payments/retry/:orderId        Retry failed payment
 ```
 
 ### Product Routes (Updated)
+
 ```
 POST   /products/place-order           Create order
 GET    /products/payment-method        Select payment method
@@ -230,16 +244,16 @@ POST   /products/process-payment       Process selection
 
 ## 📈 Statistics
 
-| Metric | Count |
-|--------|-------|
-| New Files Created | 8 |
-| Files Updated | 4 |
-| Total Lines of Code | 700+ |
-| API Endpoints | 5 |
-| Payment Methods | 1 (Airtel Money) |
-| Test Cases | 18 |
-| Documentation Files | 6 |
-| Code Examples | 20+ |
+| Metric              | Count            |
+| ------------------- | ---------------- |
+| New Files Created   | 8                |
+| Files Updated       | 4                |
+| Total Lines of Code | 700+             |
+| API Endpoints       | 5                |
+| Payment Methods     | 1 (Airtel Money) |
+| Test Cases          | 18               |
+| Documentation Files | 6                |
+| Code Examples       | 20+              |
 
 ---
 
@@ -275,22 +289,26 @@ POST   /products/process-payment       Process selection
 ## 🎓 Learning Path
 
 ### Beginner (Just starting)
+
 1. Read [AIRTEL_PAYMENTS_README.md](AIRTEL_PAYMENTS_README.md) - 5 min
 2. Get Airtel Money credentials - 10 min
 3. Configure `.env` file - 5 min
 
 ### Intermediate (Setting up)
+
 1. Follow [QUICK_START_CHECKLIST.md](QUICK_START_CHECKLIST.md)
 2. Run `node test-payments.js`
 3. Test payment flow locally
 
 ### Advanced (Deep understanding)
+
 1. Review [ARCHITECTURE_DIAGRAMS.md](ARCHITECTURE_DIAGRAMS.md)
 2. Study `services/airtelMoney.js` code
 3. Review `routes/payments.js` implementation
 4. Understand webhook flow
 
 ### Expert (Production deployment)
+
 1. Review [AIRTEL_PAYMENTS_GUIDE.md](AIRTEL_PAYMENTS_GUIDE.md)
 2. Follow production checklist
 3. Set up monitoring
@@ -302,17 +320,20 @@ POST   /products/process-payment       Process selection
 ## 🚢 Deployment Stages
 
 ### Stage 1: Development (Local)
+
 - [ ] Configure `.env` with sandbox credentials
 - [ ] Run tests locally
 - [ ] Test payment flow
 
 ### Stage 2: Staging (Pre-production)
+
 - [ ] Deploy to staging environment
 - [ ] Test with production sandbox API
 - [ ] Verify webhook delivery
 - [ ] Load testing
 
 ### Stage 3: Production
+
 - [ ] Update `NODE_ENV` to production
 - [ ] Configure production credentials
 - [ ] Set up HTTPS
@@ -363,23 +384,27 @@ e-commerce-store/
 ## ⚡ Quick Reference Card
 
 ### Installation
+
 ```bash
 npm install axios
 cp .env.airtel.example .env
 ```
 
 ### Testing
+
 ```bash
 node test-payments.js
 ```
 
 ### Running
+
 ```bash
 npm start        # Production
 npm run dev      # Development
 ```
 
 ### API Endpoints
+
 ```
 POST /payments/initiate              - Start payment
 POST /payments/callback              - Webhook receiver
@@ -389,6 +414,7 @@ POST /payments/retry/:orderId        - Retry payment
 ```
 
 ### Environment Variables
+
 ```
 AIRTEL_CLIENT_ID           Required
 AIRTEL_CLIENT_SECRET       Required
@@ -404,6 +430,7 @@ NODE_ENV                   sandbox or production
 ## 🎯 Success Criteria
 
 You'll know it's working when:
+
 - ✅ `test-payments.js` passes all tests
 - ✅ Payment method page displays correctly
 - ✅ Can enter phone number in various formats
@@ -417,13 +444,13 @@ You'll know it's working when:
 
 ## 📞 Quick Help
 
-| Issue | Solution |
-|-------|----------|
-| Tests failing | Check .env configuration |
-| API errors | Verify credentials are correct |
-| Phone format error | See formatPhoneNumber() in service |
-| Webhook not working | Verify endpoint is accessible |
-| Order not updating | Check webhook is being sent |
+| Issue               | Solution                           |
+| ------------------- | ---------------------------------- |
+| Tests failing       | Check .env configuration           |
+| API errors          | Verify credentials are correct     |
+| Phone format error  | See formatPhoneNumber() in service |
+| Webhook not working | Verify endpoint is accessible      |
+| Order not updating  | Check webhook is being sent        |
 
 ---
 

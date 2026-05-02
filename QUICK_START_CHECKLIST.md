@@ -10,14 +10,17 @@
 ## Installation Steps
 
 ### Step 1: Install Dependencies
+
 ```bash
 npm install
 npm install axios
 ```
+
 - [ ] axios successfully installed
 - [ ] No installation errors
 
 ### Step 2: Get Airtel Money Credentials
+
 - [ ] Create account at https://developer.airtel.africa
 - [ ] Create new application
 - [ ] Obtain:
@@ -27,11 +30,13 @@ npm install axios
   - [ ] Merchant ID
 
 ### Step 3: Configure Environment Variables
+
 ```bash
 cp .env.airtel.example .env
 ```
 
 Edit `.env` file:
+
 - [ ] Set AIRTEL_CLIENT_ID
 - [ ] Set AIRTEL_CLIENT_SECRET
 - [ ] Set AIRTEL_API_KEY
@@ -41,9 +46,11 @@ Edit `.env` file:
 - [ ] Set NODE_ENV=sandbox (for testing)
 
 ### Step 4: Verify Configuration
+
 ```bash
 node test-payments.js
 ```
+
 - [ ] All tests pass
 - [ ] No configuration errors
 - [ ] Service initializes successfully
@@ -51,16 +58,19 @@ node test-payments.js
 ## Testing in Sandbox
 
 ### Step 5: Start Your Server
+
 ```bash
 npm start
 # or for development
 npm run dev
 ```
+
 - [ ] Server starts without errors
 - [ ] Server accessible at http://localhost:3000
 - [ ] No console errors
 
 ### Step 6: Test Payment Flow
+
 1. Go to http://localhost:3000/products
    - [ ] Products page loads
    - [ ] Cart functionality works
@@ -93,6 +103,7 @@ npm run dev
    - [ ] Status page shows transaction details
 
 ### Step 7: Verify Webhook
+
 - [ ] Webhook endpoint accessible at /payments/callback
 - [ ] Test webhook payload sent from Airtel Money
 - [ ] Order status updates in database
@@ -166,17 +177,21 @@ npm run dev
 ## Deployment
 
 ### Development Deployment
+
 ```bash
 npm run dev
 ```
+
 - [ ] Application runs
 - [ ] Payment flow works
 - [ ] No console errors
 
 ### Production Deployment
+
 ```bash
 NODE_ENV=production npm start
 ```
+
 - [ ] Application starts
 - [ ] HTTPS enabled
 - [ ] Webhooks received

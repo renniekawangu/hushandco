@@ -1,30 +1,148 @@
-<%- include('./partials/header', { title: 'About' }) %>
+<%- include('./partials/header', { title: 'About Us' }) %>
 
-<section class="content-wrapper">
-    <div class="admin-section">
-        <h2>About eSync Store</h2>
-        <p>Welcome to eSync Store — your trusted online shopping destination powered by cutting-edge technology. We provide a seamless shopping experience with integrated payment solutions including Airtel Money for your convenience.</p>
-        <p>Our platform is built on a modern technology stack combining Node.js, Express, and MongoDB to deliver fast, reliable service.</p>
-        <h3>Our Features</h3>
-        <ul>
-            <li>Extensive product catalog with easy browsing and search</li>
-            <li>Secure shopping cart and checkout process</li>
-            <li>Multiple payment methods including Airtel Money</li>
-            <li>Real-time order tracking and management</li>
-            <li>Customer service and support team</li>
-            <li>Admin dashboard for efficient store management</li>
-            <li>Fast and reliable delivery</li>
-        </ul>
-        <h3>Why eSync?</h3>
-        <ul>
-            <li><strong>Easy Payment:</strong> Pay conveniently with Airtel Money</li>
-            <li><strong>Quality Products:</strong> Curated selection of quality items</li>
-            <li><strong>Fast Checkout:</strong> Quick and secure transaction process</li>
-            <li><strong>Customer Support:</strong> Dedicated support team ready to help</li>
-            <li><strong>Trusted Service:</strong> Secure and reliable shopping experience</li>
-        </ul>
-        <p>Have questions or need support? Visit our <a href="/contact">Contact page</a> to get in touch with our team.</p>
-    </div>
-</section>
+<main class="about-page" id="main">
+    <section class="about-hero about-hero-redesign" aria-labelledby="about-hero-title">
+        <div class="about-shell about-hero-layout">
+            <div class="about-hero-copy">
+                <p class="eyebrow">About eSync Store</p>
+                <h1 id="about-hero-title">A cleaner way to shop everyday essentials.</h1>
+                <p class="hero-sub">We bring useful products, clear stock information, and straightforward checkout into one store built for fast decisions.</p>
+                <div class="about-actions">
+                    <a href="/products" class="btn btn-primary">Browse Products</a>
+                    <a href="/contact" class="btn btn-outline">Contact Support</a>
+                </div>
+            </div>
+
+            <div class="about-visual" aria-label="Featured store products">
+                <img class="about-visual-main" src="/assets/products/iphone.jpeg" alt="Smartphone product">
+                <div class="about-visual-stack">
+                    <img src="/assets/products/jacket.jpeg" alt="Jacket product">
+                    <img src="/assets/products/yoga-mat.jpg" alt="Yoga mat product">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-shell about-intro" aria-labelledby="about-intro-title">
+        <div>
+            <p class="eyebrow">What we do</p>
+            <h2 id="about-intro-title">We make the store feel simple from product discovery to payment.</h2>
+        </div>
+        <div class="about-copy">
+            <p>eSync Store is an online shopping experience focused on practical products, transparent availability, and checkout flows that feel familiar for local customers.</p>
+            <p>The platform supports product browsing, cart management, secure account access, order handling, and payment options including Airtel Money.</p>
+        </div>
+    </section>
+
+    <section class="about-shell about-principles" aria-label="Store principles">
+        <article class="about-principle">
+            <span>01</span>
+            <h3>Clear Choices</h3>
+            <p>Products show price, category, and stock status upfront so customers can move quickly.</p>
+        </article>
+        <article class="about-principle">
+            <span>02</span>
+            <h3>Secure Checkout</h3>
+            <p>Checkout keeps the path focused, with payment choices designed around confidence.</p>
+        </article>
+        <article class="about-principle">
+            <span>03</span>
+            <h3>Helpful Support</h3>
+            <p>Customers can reach the team directly when they need product or order assistance.</p>
+        </article>
+    </section>
+
+    <section class="about-band" aria-label="Store statistics">
+        <div class="about-shell about-band-grid">
+            <div class="about-stat">
+                <strong>24h</strong>
+                <span>Support Window</span>
+            </div>
+            <div class="about-stat">
+                <strong>3</strong>
+                <span>Payment Options</span>
+            </div>
+            <div class="about-stat">
+                <strong>5</strong>
+                <span>Core Categories</span>
+            </div>
+            <div class="about-stat">
+                <strong>100%</strong>
+                <span>Catalog Focused</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-shell about-process" aria-labelledby="about-process-title">
+        <div class="about-process-copy">
+            <p class="eyebrow">How it works</p>
+            <h2 id="about-process-title">A shopping flow built around fewer distractions.</h2>
+            <p>Browse the catalog, filter to the right product, add items to cart, choose a payment method, and keep moving. The experience favors direct actions over noise.</p>
+            <a href="/products" class="section-link">Start shopping</a>
+        </div>
+        <div class="about-steps">
+            <div class="about-step">
+                <span>Browse</span>
+                <p>Search and filter products by category, price, and newest arrivals.</p>
+            </div>
+            <div class="about-step">
+                <span>Review</span>
+                <p>Open product details, confirm stock, and add the right quantity to cart.</p>
+            </div>
+            <div class="about-step">
+                <span>Checkout</span>
+                <p>Complete the order with a payment option that suits the customer.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-shell about-team" aria-labelledby="about-team-title">
+        <div class="about-team-header">
+            <div>
+                <p class="eyebrow">The team</p>
+                <h2 id="about-team-title">People keeping the store useful, calm, and reliable.</h2>
+            </div>
+            <p>Our work is split across product curation, customer support, payments, and operations so shoppers get a smoother experience from first click to checkout.</p>
+        </div>
+
+        <div class="about-team-grid">
+            <article class="about-team-card">
+                <div class="team-avatar">RK</div>
+                <div>
+                    <h3>Rennie Kawangu</h3>
+                    <p class="team-role">Product Lead</p>
+                    <p>Shapes the storefront experience and keeps customer workflows direct.</p>
+                </div>
+            </article>
+            <article class="about-team-card">
+                <div class="team-avatar">NM</div>
+                <div>
+                    <h3>Nadia Mwansa</h3>
+                    <p class="team-role">Customer Success</p>
+                    <p>Helps customers resolve product, account, and order questions quickly.</p>
+                </div>
+            </article>
+            <article class="about-team-card">
+                <div class="team-avatar">CK</div>
+                <div>
+                    <h3>Chanda K.</h3>
+                    <p class="team-role">Operations</p>
+                    <p>Coordinates catalog updates, availability checks, and fulfillment details.</p>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="about-shell about-cta" aria-labelledby="about-cta-title">
+        <div>
+            <p class="eyebrow">Ready when you are</p>
+            <h2 id="about-cta-title">Explore the catalog or ask us for help finding something specific.</h2>
+        </div>
+        <div class="about-actions">
+            <a href="/products" class="btn btn-primary">Shop Products</a>
+            <a href="/contact" class="btn btn-outline">Send a Message</a>
+        </div>
+    </section>
+</main>
 
 <%- include('./partials/footer') %>

@@ -121,6 +121,7 @@ Customer Cart → Shipping Info → Payment Method Selection → Airtel Money
 ### Payment Routes
 
 #### 1. **Initiate Payment**
+
 ```
 POST /payments/initiate
 Content-Type: application/json
@@ -140,6 +141,7 @@ Response:
 ```
 
 #### 2. **Webhook Callback**
+
 ```
 POST /payments/callback
 X-Airtel-Signature: signature_hash
@@ -148,6 +150,7 @@ Body: Airtel Money webhook payload
 ```
 
 #### 3. **Check Payment Status**
+
 ```
 GET /payments/status/:transactionId
 
@@ -170,6 +173,7 @@ Response:
 ```
 
 #### 4. **Check Order Payment Status**
+
 ```
 GET /payments/order/:orderId
 
@@ -192,6 +196,7 @@ Response:
 ```
 
 #### 5. **Retry Payment**
+
 ```
 POST /payments/retry/:orderId
 Content-Type: application/json
@@ -237,11 +242,13 @@ The Order model now includes payment details:
 ## Views
 
 ### 1. **Payment Method Selection** (`/views/payment-method.ejs`)
+
 - Allows customers to choose payment method
 - Currently enabled: Airtel Money
 - Future options: Credit Card, Bank Transfer
 
 ### 2. **Airtel Money Payment** (`/views/payment.ejs`)
+
 - Phone number input form
 - Order summary display
 - Payment status updates
@@ -271,13 +278,13 @@ Contact Airtel Money developer support for test phone numbers and sandbox creden
 
 ### Common Error Scenarios
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `Failed to authenticate with Airtel Money` | Invalid credentials | Verify API credentials in `.env` |
-| `Failed to initiate payment` | Network or API issue | Check API URL and internet connection |
-| `Order not found` | Invalid order ID | Verify order exists before payment |
-| `Unauthorized` | User doesn't own order | Ensure correct user is authenticated |
-| `Invalid webhook signature` | Webhook signature doesn't match | Verify webhook signing key |
+| Error                                      | Cause                           | Solution                              |
+| ------------------------------------------ | ------------------------------- | ------------------------------------- |
+| `Failed to authenticate with Airtel Money` | Invalid credentials             | Verify API credentials in `.env`      |
+| `Failed to initiate payment`               | Network or API issue            | Check API URL and internet connection |
+| `Order not found`                          | Invalid order ID                | Verify order exists before payment    |
+| `Unauthorized`                             | User doesn't own order          | Ensure correct user is authenticated  |
+| `Invalid webhook signature`                | Webhook signature doesn't match | Verify webhook signing key            |
 
 ## Security Considerations
 
@@ -303,6 +310,7 @@ Contact Airtel Money developer support for test phone numbers and sandbox creden
 ### Webhook Security
 
 The webhook handler automatically:
+
 - Verifies HMAC-SHA256 signature
 - Logs invalid signatures
 - Processes payload regardless (continues execution)

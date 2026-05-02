@@ -1,0 +1,152 @@
+<%
+    const heroProduct = (featuredProducts && featuredProducts[4]) || (recentProducts && recentProducts[0]);
+    const heroImage = heroProduct ? heroProduct.imageUrl : '/assets/puroducts/chili.png';
+    const displayProducts = (featuredProducts && featuredProducts.length ? featuredProducts : recentProducts) || [];
+%>
+
+<%- include('./partials/header', {title: 'Home'}) %>
+
+<main class="home-page">
+    <section class="home-hero" style="--hero-image: url('<%= heroImage %>');">
+        <div class="home-hero-overlay">
+            <div class="home-hero-content">
+                <p class="eyebrow">Secure shopping &bull; Airtel Money ready &bull; Curated catalog</p>
+                <h1>eSync Store</h1>
+                <p class="hero-lead">Shop everyday essentials, tech, style, home goods, and fitness picks from one smooth storefront.</p>
+                <form action="/products" method="GET" class="home-search" role="search">
+                    <input type="search" name="search" placeholder="Search products" aria-label="Search products">
+                    <button type="submit">Search</button>
+                </form>
+                <div class="home-hero-actions">
+                    <a href="/products" class="btn btn-primary">Shop Now</a>
+                    <a href="/contact" class="btn btn-outline">Talk to Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="home-main">
+        <section class="home-strip" aria-label="Store highlights">
+            <div class="home-strip-item">
+                <strong><%= totalProducts || displayProducts.length %>+</strong>
+                <span>Products</span>
+            </div>
+            <div class="home-strip-item">
+                <strong>24h</strong>
+                <span>Support</span>
+            </div>
+            <div class="home-strip-item">
+                <strong>3</strong>
+                <span>Payment Options</span>
+            </div>
+        </section>
+
+        <% if (heroProduct) { %>
+            <section class="home-feature" aria-labelledby="home-feature-title">
+                <div class="home-feature-copy">
+                    <p class="eyebrow">Today in focus</p>
+                    <h2 id="home-feature-title"><%= heroProduct.name %></h2>
+                    <p><%= heroProduct.description %></p>
+                    <div class="home-feature-meta">
+                        <span><%= heroProduct.category %></span>
+                        <strong>K<%= heroProduct.price.toFixed(2) %></strong>
+                    </div>
+                    <div class="home-feature-actions">
+                        <a href="/products?search=<%= encodeURIComponent(heroProduct.name) %>" class="btn btn-primary">View Product</a>
+                        <a href="/products?category=<%= encodeURIComponent(heroProduct.category) %>" class="btn btn-outline">Shop <%= heroProduct.category %></a>
+                    </div>
+                </div>
+                <a href="/products?search=<%= encodeURIComponent(heroProduct.name) %>" class="home-feature-media">
+                    <img src="<%= heroProduct.imageUrl %>" alt="<%= heroProduct.name %>" loading="lazy">
+                </a>
+            </section>
+        <% } %>
+
+        <% if (categories && categories.length) { %>
+            <section class="home-section">
+                <div class="home-section-header">
+                    <div>
+                        <p class="eyebrow">Browse faster</p>
+                        <h2>Shop by Category</h2>
+                    </div>
+                    <a href="/products" class="section-link">View all</a>
+                </div>
+                <div class="category-pills">
+                    <% categories.forEach(category => { %>
+                        <a href="/products?category=<%= encodeURIComponent(category) %>" class="category-pill"><%= category %></a>
+                    <% }) %>
+                </div>
+            </section>
+        <% } %>
+
+        <section class="home-section">
+            <div class="home-section-header">
+                <div>
+                    <p class="eyebrow">Featured picks</p>
+                    <h2>Made for Quick Decisions</h2>
+                </div>
+                <a href="/products?sort=newest" class="section-link">Open catalog</a>
+            </div>
+
+            <% if (displayProducts.length) { %>
+                <div class="home-product-grid">
+                    <% displayProducts.slice(0, 4).forEach(product => { %>
+                        <article class="home-product-card">
+                            <a href="/products?search=<%= encodeURIComponent(product.name) %>" class="home-product-image">
+                                <img src="<%= product.imageUrl %>" alt="<%= product.name %>" loading="lazy">
+                                <% if (product.featured) { %>
+                                    <span class="product-badge badge-featured">Featured</span>
+                                <% } %>
+                            </a>
+                            <div class="home-product-body">
+                                <span class="home-product-category"><%= product.category %></span>
+                                <h3><%= product.name %></h3>
+                                <p><%= product.description %></p>
+                                <div class="home-product-footer">
+                                    <strong>K<%= product.price.toFixed(2) %></strong>
+                                    <form action="/products/add-to-cart/<%= product._id %>" method="POST">
+                                        <button type="submit" class="btn btn-primary" <%= product.stock === 0 ? 'disabled' : '' %>>Add</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </article>
+                    <% }) %>
+                </div>
+            <% } else { %>
+                <div class="empty-state">
+                    <h3>The catalog is being stocked</h3>
+                    <p>Check back shortly or contact us for help finding what you need.</p>
+                    <a href="/contact" class="btn btn-primary">Contact Us</a>
+                </div>
+            <% } %>
+        </section>
+
+        <section class="home-service-row" aria-label="Store promises">
+            <div class="home-service">
+                <span>01</span>
+                <h3>Browse With Context</h3>
+                <p>Category, stock, and price details stay visible where decisions happen.</p>
+            </div>
+            <div class="home-service">
+                <span>02</span>
+                <h3>Pay Your Way</h3>
+                <p>Checkout supports Airtel Money, card, and bank transfer payment flows.</p>
+            </div>
+            <div class="home-service">
+                <span>03</span>
+                <h3>Get Help Quickly</h3>
+                <p>The contact flow routes product and order questions to the support team.</p>
+            </div>
+        </section>
+
+        <section class="home-cta-panel" aria-labelledby="home-cta-title">
+            <div>
+                <p class="eyebrow">Ready to browse</p>
+                <h2 id="home-cta-title">Start with the catalog, then filter your way to the right item.</h2>
+            </div>
+            <a href="/products" class="btn btn-primary">Open Store</a>
+        </section>
+    </div>
+</main>
+
+<%- include('./partials/footer') %>

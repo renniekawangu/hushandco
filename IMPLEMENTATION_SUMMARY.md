@@ -7,6 +7,7 @@ A complete, production-ready Airtel Money payment integration module has been im
 ## What's Been Implemented
 
 ### 1. Core Service (`services/airtelMoney.js`)
+
 - **Complete Airtel Money API client** with:
   - OAuth2 authentication with token caching
   - Payment initiation via Cash In API
@@ -17,6 +18,7 @@ A complete, production-ready Airtel Money payment integration module has been im
   - Transaction ID generation
 
 **Key Methods:**
+
 - `getAccessToken()` - OAuth2 authentication
 - `initiatePayment(paymentData)` - Start payment request
 - `getPaymentStatus(transactionId)` - Check payment status
@@ -26,6 +28,7 @@ A complete, production-ready Airtel Money payment integration module has been im
 - `generateMerchantTransactionId()` - Generate unique IDs
 
 ### 2. Payment Routes (`routes/payments.js`)
+
 - **POST `/payments/initiate`** - Initiate payment
 - **POST `/payments/callback`** - Webhook receiver
 - **GET `/payments/status/:transactionId`** - Check payment status
@@ -33,6 +36,7 @@ A complete, production-ready Airtel Money payment integration module has been im
 - **POST `/payments/retry/:orderId`** - Retry failed payment
 
 **Features:**
+
 - User authentication checks
 - Order validation
 - Real-time payment status updates
@@ -42,12 +46,14 @@ A complete, production-ready Airtel Money payment integration module has been im
 ### 3. Payment Views
 
 **`views/payment-method.ejs`**
+
 - Payment method selection interface
 - Order summary display
 - Currently enabled: Airtel Money
 - Future options: Credit Card, Bank Transfer
 
 **`views/payment.ejs`**
+
 - Phone number input form
 - Order details display
 - Payment status tracking
@@ -57,6 +63,7 @@ A complete, production-ready Airtel Money payment integration module has been im
 - Professional UI with responsive design
 
 ### 4. Checkout Flow Integration
+
 - Modified `routes/products.js` to integrate payment flow:
   - New route: `GET /products/payment-method` - Select payment method
   - Updated: `POST /products/place-order` - Create order
@@ -65,7 +72,9 @@ A complete, production-ready Airtel Money payment integration module has been im
   - Seamless checkout to payment transition
 
 ### 5. Database Model Updates (`models/order.js`)
+
 Extended Order schema with payment tracking:
+
 ```javascript
 {
   paymentMethod: String,           // Payment method used
@@ -84,17 +93,20 @@ Extended Order schema with payment tracking:
 ### 6. Configuration Files
 
 **`.env.airtel.example`**
+
 - Template for required environment variables
 - Example values and descriptions
 - Ready to copy and configure
 
 **`package.json` (updated)**
+
 - Added `axios` dependency for HTTP requests
 - Version: ^1.6.0
 
 ### 7. Documentation
 
 **`AIRTEL_PAYMENTS_GUIDE.md`** (Comprehensive Guide)
+
 - Complete setup instructions
 - API integration details
 - Payment flow documentation
@@ -107,6 +119,7 @@ Extended Order schema with payment tracking:
 - Testing procedures
 
 **`PAYMENTS_MODULE_README.md`** (Quick Reference)
+
 - Module overview
 - Quick start guide
 - File structure
@@ -116,6 +129,7 @@ Extended Order schema with payment tracking:
 - Next steps
 
 ### 8. Testing Utility (`test-payments.js`)
+
 - Comprehensive test suite covering:
   - Environment configuration validation
   - Service instantiation
@@ -130,6 +144,7 @@ Extended Order schema with payment tracking:
 - Run with: `node test-payments.js`
 
 ### 9. Main Application Integration (`app.js`)
+
 - Added payments route to main Express app
 - Integrated with existing middleware
 - Webhook endpoint properly configured
@@ -137,6 +152,7 @@ Extended Order schema with payment tracking:
 ## Technical Architecture
 
 ### Payment Flow
+
 ```
 1. Customer adds items to cart
 2. Go to checkout → enter shipping info → place order
@@ -151,6 +167,7 @@ Extended Order schema with payment tracking:
 ```
 
 ### Authentication Flow
+
 ```
 App ← OAuth2 Request ← Airtel Money
 App → OAuth2 Token → Airtel Money
@@ -159,6 +176,7 @@ App ← Access Token ← Airtel Money
 ```
 
 ### Webhook Flow
+
 ```
 Airtel Money → POST /payments/callback
 System → Verify Signature (HMAC-SHA256)
@@ -193,7 +211,7 @@ NODE_ENV                  # sandbox or production
 
 ```json
 {
-  "axios": "^1.6.0"  // HTTP client for API requests
+  "axios": "^1.6.0" // HTTP client for API requests
 }
 ```
 
@@ -223,6 +241,7 @@ e-commerce-store/
 ## Key Features
 
 ### For Customers
+
 - ✅ Easy payment method selection
 - ✅ Clear payment instructions
 - ✅ Real-time payment status updates
@@ -231,6 +250,7 @@ e-commerce-store/
 - ✅ Instant payment confirmation
 
 ### For Merchants
+
 - ✅ Real-time payment tracking
 - ✅ Automatic order status updates
 - ✅ Webhook notifications
@@ -239,6 +259,7 @@ e-commerce-store/
 - ✅ Easy refund capability (can be added)
 
 ### For Developers
+
 - ✅ Clean, modular code
 - ✅ Well-documented service
 - ✅ Easy to extend for other payment methods
@@ -249,29 +270,34 @@ e-commerce-store/
 ## Getting Started
 
 ### 1. Install Dependencies
+
 ```bash
 npm install
 npm install axios
 ```
 
 ### 2. Configure Environment
+
 ```bash
 cp .env.airtel.example .env
 # Edit .env with your Airtel Money credentials
 ```
 
 ### 3. Get Airtel Money Credentials
+
 - Register at: https://developer.airtel.africa
 - Create an application
 - Get Client ID, Client Secret, API Key, and Merchant ID
 - Configure webhook URL: https://yourdomain.com/payments/callback
 
 ### 4. Test the Integration
+
 ```bash
 node test-payments.js
 ```
 
 ### 5. Run the Application
+
 ```bash
 npm start
 # or for development
@@ -279,6 +305,7 @@ npm run dev
 ```
 
 ### 6. Test Payment Flow
+
 1. Go to http://localhost:3000/products
 2. Add items to cart
 3. Proceed to checkout
@@ -289,6 +316,7 @@ npm run dev
 ## API Response Examples
 
 ### Initiate Payment Success
+
 ```json
 {
   "success": true,
@@ -300,6 +328,7 @@ npm run dev
 ```
 
 ### Payment Status
+
 ```json
 {
   "success": true,
@@ -319,6 +348,7 @@ npm run dev
 ```
 
 ### Error Response
+
 ```json
 {
   "error": "Failed to authenticate with Airtel Money"
@@ -359,6 +389,7 @@ npm run dev
 ## Support & Troubleshooting
 
 Refer to:
+
 - **`AIRTEL_PAYMENTS_GUIDE.md`** - Comprehensive documentation
 - **`PAYMENTS_MODULE_README.md`** - Quick reference
 - **`services/airtelMoney.js`** - Service implementation
