@@ -2,6 +2,12 @@
     const heroProduct = (featuredProducts && featuredProducts[4]) || (recentProducts && recentProducts[0]);
     const heroImage = heroProduct ? heroProduct.imageUrl : '/assets/puroducts/chili.png';
     const displayProducts = (featuredProducts && featuredProducts.length ? featuredProducts : recentProducts) || [];
+    while (displayProducts.length < 4) {
+        displayProducts.push(...displayProducts);
+    }
+    // Collect all product images for hero carousel
+    const allProducts = featuredProducts || recentProducts || [];
+    const heroImages = allProducts.map(p => p.imageUrl).filter(img => img);
 %>
 
 <%- include('./partials/header', {title: 'Home'}) %>
@@ -10,13 +16,8 @@
     <section class="home-hero" style="--hero-image: url('<%= heroImage %>');">
         <div class="home-hero-overlay">
             <div class="home-hero-content">
-                <p class="eyebrow">Secure shopping &bull; Airtel Money ready &bull; Curated catalog</p>
-                <h1>eSync Store</h1>
+                <h1>Hush & Co</h1>
                 <p class="hero-lead">Shop everyday essentials, tech, style, home goods, and fitness picks from one smooth storefront.</p>
-                <form action="/products" method="GET" class="home-search" role="search">
-                    <input type="search" name="search" placeholder="Search products" aria-label="Search products">
-                    <button type="submit">Search</button>
-                </form>
                 <div class="home-hero-actions">
                     <a href="/products" class="btn btn-primary">Shop Now</a>
                     <a href="/contact" class="btn btn-outline">Talk to Us</a>
@@ -63,7 +64,7 @@
         <% } %>
 
         <% if (categories && categories.length) { %>
-            <section class="home-section">
+            <section class="home-section" >
                 <div class="home-section-header">
                     <div>
                         <p class="eyebrow">Browse faster</p>
@@ -144,9 +145,28 @@
                 <p class="eyebrow">Ready to browse</p>
                 <h2 id="home-cta-title">Start with the catalog, then filter your way to the right item.</h2>
             </div>
-            <a href="/products" class="btn btn-primary">Open Store</a>
+            <a href="/products" class="btn btn-primary">Store</a>
         </section>
     </div>
 </main>
 
 <%- include('./partials/footer') %>
+
+<script>
+    // Hero image carousel - rotate every 3 seconds
+    (function() {
+        const heroImages = <%- JSON.stringify(heroImages) %>;
+        if (!heroImages || heroImages.length === 0) return;
+        
+        const heroElement = document.querySelector('.home-hero');
+        if (!heroElement) return;
+        
+        let currentIndex = 0;
+        
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % heroImages.length;
+            const nextImage = heroImages[currentIndex];
+            heroElement.style.setProperty('--hero-image', `url('${nextImage}')`);
+        }, 5000);
+    })();
+</script>
