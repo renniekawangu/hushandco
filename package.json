@@ -12,7 +12,7 @@
     "format": "prettier --write ."
   },
   "engines": {
-    "node": "18"
+    "node": "24.x"
   },
   "keywords": ["ecommerce", "store", "hush-co"],
   "author": "Rennie Kawangu",
