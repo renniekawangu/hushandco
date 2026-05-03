@@ -5,9 +5,14 @@
     while (displayProducts.length < 4) {
         displayProducts.push(...displayProducts);
     }
-    // Collect all product images for hero carousel
-    const allProducts = featuredProducts || recentProducts || [];
-    const heroImages = allProducts.map(p => p.imageUrl).filter(img => img);
+    // Use catalog images for hero carousel
+    const heroImages = [
+        '/assets/catalog/1.png',
+        '/assets/catalog/2.png',
+        '/assets/catalog/3.png',
+        '/assets/catalog/4.png',
+        '/assets/catalog/5.png'
+    ];
 %>
 
 <%- include('./partials/header', {title: 'Home'}) %>
