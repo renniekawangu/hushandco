@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../../models/product');
+const Category = require('../../models/category');
 const { requireAdmin } = require('../../middleware/setUser');
 
 // List all products
@@ -27,12 +28,13 @@ router.get('/', requireAdmin, async (req, res) => {
 
     const products = await Product.find(query).sort({ createdAt: -1 });
 
-    // Get unique categories for the filter dropdown
-    const categories = await Product.distinct('category');
+    // Get categories from database
+    const categories = await Category.find().sort({ name: 1 });
+    const categoryNames = categories.map(c => c.name);
 
     res.render('admin/products/index', {
       products,
-      categories,
+      categories: categoryNames,
       search,
       selectedCategory: category,
     });
@@ -44,10 +46,18 @@ router.get('/', requireAdmin, async (req, res) => {
 });
 
 // Show add product form
-router.get('/add', requireAdmin, (req, res) => {
-  res.render('admin/products/add', {
-    product: {},
-  });
+router.get('/add', requireAdmin, async (req, res) => {
+  try {
+    const categories = await Category.find().sort({ name: 1 });
+    res.render('admin/products/add', {
+      product: {},
+      categories: categories.map(c => c.name),
+    });
+  } catch (err) {
+    console.error('Error loading form:', err);
+    req.flash('error', 'Failed to load form');
+    res.redirect('/admin/products');
+  }
 });
 
 // Create new product
@@ -93,7 +103,11 @@ router.get('/:id/edit', requireAdmin, async (req, res) => {
       req.flash('error', 'Product not found');
       return res.redirect('/admin/products');
     }
-    res.render('admin/products/edit', { product });
+    const categories = await Category.find().sort({ name: 1 });
+    res.render('admin/products/edit', {
+      product,
+      categories: categories.map(c => c.name),
+    });
   } catch (err) {
     console.error('Error fetching product:', err);
     req.flash('error', 'Failed to load product');

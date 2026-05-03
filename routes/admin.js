@@ -7,6 +7,7 @@ const Message = require('../models/message');
 // Import admin routes
 const userRouter = require('./admin/users');
 const productsRouter = require('./admin/products');
+const categoriesRouter = require('./admin/categories');
 
 const { requireAdmin } = require('../middleware/setUser');
 
@@ -229,6 +230,7 @@ router.get('/orders', requireAdmin, async (req, res) => {
 // Mount admin routes
 router.use('/users', userRouter);
 router.use('/products', productsRouter);
+router.use('/categories', categoriesRouter);
 
 // Mark message as read
 router.post('/messages/mark-read/:id', requireAdmin, async (req, res) => {

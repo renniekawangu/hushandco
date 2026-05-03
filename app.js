@@ -7,6 +7,7 @@ const productRouter = require('./routes/products');
 const path = require('path');
 const mongoose = require('mongoose');
 const Product = require('./models/product');
+const Category = require('./models/category');
 
 // Global error handlers
 process.on('uncaughtException', (err) => {
@@ -166,7 +167,7 @@ app.get('/', async (req, res) => {
       await Promise.all([
         Product.find({ featured: true }).sort({ createdAt: -1 }).limit(4),
         Product.find({}).sort({ createdAt: -1 }).limit(6),
-        Product.distinct('category'),
+        Category.find().sort({ name: 1 }).select('name'),
         Product.countDocuments(),
       ]);
 
@@ -174,7 +175,7 @@ app.get('/', async (req, res) => {
       title: 'Home',
       featuredProducts,
       recentProducts,
-      categories,
+      categories: categories.map(c => c.name),
       totalProducts,
       cart: req.session.cart || [],
       user: req.user,

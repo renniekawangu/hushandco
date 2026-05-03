@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
+const Category = require('../models/category');
 const Order = require('../models/order');
 const User = require('../models/user');
 const { isAuthenticated } = require('./auth');
@@ -54,11 +55,12 @@ router.get('/', async (req, res) => {
     }
 
     const products = await Product.find(query).sort(sortQuery);
-    const categories = await Product.distinct('category');
+    const categories = await Category.find().sort({ name: 1 }).select('name');
+    const categoryList = categories.map(c => c.name);
 
     res.render('products', {
       products,
-      categories,
+      categories: categoryList,
       cart: req.session.cart || [],
       currentCategory: category || 'All',
       currentSort: sort || 'newest',
